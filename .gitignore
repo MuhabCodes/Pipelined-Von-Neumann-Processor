@@ -3,3 +3,4 @@
 /src/*.mti
 /src/*.bak
 /src/*.wlf
+/src/work/**
