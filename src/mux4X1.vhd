@@ -4,7 +4,7 @@ entity mux4x1 is
 generic (n: integer := 32);
 port (
     in1, in2, in3, in4 : in std_logic_vector (n - 1 downto 0);
-    sel : in  std_logic;
+    sel : in std_logic_vector(1 downto 0);
     out1 : out std_logic_vector (n - 1 downto 0)
 );
 end entity mux4x1;
