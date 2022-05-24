@@ -1,0 +1,5 @@
+# Generated verilog files
+/src/*.mpf
+/src/*.mti
+/src/*.bak
+/src/*.wlf
