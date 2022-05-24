@@ -9,7 +9,7 @@ port (
 );
 end entity mux4x1;
 
-architecture arch1 of mux4x1 is
+architecture struct of mux4x1 is
 begin
     out1 <= in1 when sel = "00"
     else in2 when sel = "01"
