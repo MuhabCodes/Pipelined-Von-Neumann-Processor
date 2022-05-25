@@ -2,24 +2,24 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 
-entity nBitCSA is
+entity adder is
 generic (n: integer := 16);
 port(
-Cin: in std_logic;
-A,B: in std_logic_vector(n-1 downto 0);
-Sum: out std_logic_vector(n-1 downto 0);
-Cout: out std_logic
+cin: in std_logic;
+a,b: in std_logic_vector(n-1 downto 0);
+sum: out std_logic_vector(n-1 downto 0);
+cout: out std_logic
 );
 end entity;
 
-architecture CSA_arch of nBitCSA is
-signal tempA, tempB: std_logic_vector(n downto 0);
+architecture struct of adder is
+signal temp_A, temp_B: std_logic_vector(n downto 0);
 signal temp: std_logic_vector(n downto 0);
 begin
-tempA <= '0' & A;
-tempB <= '0' & B;
-temp <= tempA + tempB;
+temp_A <= '0' & A;
+temp_B <= '0' & B;
+temp <= temp_A + temp_B;
 sum <= temp(n-1 downto 0);
-Cout <= temp(n);
+cout <= temp(n);
 
 end architecture;
