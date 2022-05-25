@@ -11,11 +11,10 @@ port(
 	mem_signal_in : in std_logic;
 	wb_signal_in : in std_logic;
 	--- END stored control signals
-	opcode_in : in std_logic_vector(31 downto 0);
 	pc_in : in std_logic_vector(31 downto 0);
 	reg1_in : in std_logic_vector(31 downto 0);
 	reg2_in : in std_logic_vector(31 downto 0);
-	imm_ea_in : in std_logic_vector(31 downto 0);
+	imm_ea_in : in std_logic_vector(15 downto 0);
 	rsrc1_in : in std_logic_vector(2 downto 0);
 	rsrc2_in : in std_logic_vector(2 downto 0);
 	rd_in : in std_logic_vector(2 downto 0);
@@ -25,12 +24,10 @@ port(
 	mem_signal : out std_logic;
 	wb_signal : out std_logic;
 	--- END stored control signals
-	opcode : out std_logic_vector(31 downto 0);
-	opcode_extend : out std_logic_vector(31 downto 0);
 	pc : out std_logic_vector(31 downto 0);
 	reg1 : out std_logic_vector(31 downto 0);
 	reg2 : out std_logic_vector(31 downto 0);
-	imm_ea : out std_logic_vector(31 downto 0);
+	imm_ea_extend : out std_logic_vector(31 downto 0);
 	rsrc1 : out std_logic_vector(2 downto 0);
 	rsrc2 : out std_logic_vector(2 downto 0);
 	rd : out std_logic_vector(2 downto 0)
@@ -46,12 +43,10 @@ begin
 			ex_signal <= '0';
 			mem_signal <= '0';
 			wb_signal <= '0';
-			opcode <= (others => '0');
-			opcode_extend <= (others => '0');
 			pc <= (others => '0');
 			reg1 <= (others => '0');
 			reg2 <= (others => '0');
-			imm_ea <= (others => '0');
+			imm_ea_extend <= (others => '0');
 			rsrc1 <= (others => '0');
 			rsrc2 <= (others => '0');
 			rd <= (others => '0');
@@ -59,12 +54,10 @@ begin
 			ex_signal <= ex_signal_in;
 			mem_signal <= mem_signal_in;
 			wb_signal <= wb_signal_in;
-			opcode <= opcode_in;
-			opcode_extend <= (31 downto 16 => opcode_in(15)) & opcode_in(15 downto 0);
+			imm_ea_extend <= (31 downto 16 => imm_ea_in(15)) & imm_ea_in(15 downto 0);
 			pc <= pc_in;
 			reg1 <= reg1_in;
 			reg2 <= reg2_in;
-			imm_ea <= imm_ea_in;
 			rsrc1 <= rsrc1_in;
 			rsrc2 <= rsrc2_in;
 			rd <= rd_in;
