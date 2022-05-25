@@ -21,10 +21,11 @@ port (
 	restore_flags : out std_logic;
 	int_en : out std_logic;
 	pc_src : out std_logic_vector(1 downto 0)
-	-- flush_if : out std_logic;
+    -- flush_if : out std_logic;
 	-- flush_id : out std_logic;
 	-- flush_ex : out std_logic;
 	-- flush_wb : out std_logic;
+	
 );
 end entity;
 
