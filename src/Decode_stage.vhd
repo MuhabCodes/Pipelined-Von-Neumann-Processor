@@ -31,14 +31,15 @@ entity decode_stage is
         PC: in std_logic_vector(31 downto 0);
 
         IMM_in: in std_logic_vector(31 downto 0);
-        readData1,readData2: out std_logic_vector(31 downto 0);--signal in from register
+        readData1,readData2: out std_logic_vector(31 downto 0);
 
         Rd, Rs,Rt: out std_logic_vector(2 downto 0);
         index: out std_logic_vector(1 downto 0);
 
-        CCR_out: in std_logic_vector(2 downto 0);
-                
+        CCR_out: in std_logic_vector(2 downto 0)
+--to do:
 ---muxx bt3 el mem wb ex signals lesa msh m3mol
+--hazard detection unit
     );
 end entity;
 
