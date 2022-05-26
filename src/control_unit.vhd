@@ -6,6 +6,7 @@ entity control_unit IS
 port (
 	clk : in std_logic;
 	opcode : in std_logic_vector(4 downto 0);
+	CCR_OUT: in std_logic_vector(2 downto 0);
 	ccr_wr_en : out std_logic_vector(2 downto 0);
 	reg_write : out std_logic;
 	alu_src : out std_logic;
@@ -16,7 +17,6 @@ port (
 	stack_en : out std_logic;
 	mem_to_reg : out std_logic;
 	return_en : out std_logic;
-	jmp_en : out std_logic;
 	jmp_op : out std_logic_vector(1 downto 0);
 	restore_flags : out std_logic;
 	int_en : out std_logic;
@@ -30,9 +30,25 @@ port (
 end entity;
 
 architecture struct of control_unit is
+
+	component mux4x1 is 
+generic (n: integer := 32);
+port (
+    in1, in2, in3, in4 : in std_logic_vector (n - 1 downto 0);
+    sel : in std_logic_vector(1 downto 0);
+    out1 : out std_logic_vector (n - 1 downto 0)
+);
+end component mux4x1;
+
+signal isjump: std_logic;
+signal jmp_en: std_logic;
+
 begin
+	jumpCU: mux4x1 generic port (1) port map ("1",CCR_out(2),CCR_out(1),CCR_out(0),jmp_op,isjump);
+
 	process(clk) is
 	begin
+		
 		if rising_edge(clk) then 
 			if (opcode = "XXXXX") then
 				ccr_wr_en <= "000";
@@ -373,7 +389,11 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "11";
+				if(jmp_en = '1' and isjump ='1') then 
+					pc_src <= "11";
+				else
+					pc_src <= "00";
+				end if;
 			-- JN
 			elsif (opcode = "11001") then
 				ccr_wr_en <= "010";
@@ -390,7 +410,11 @@ begin
 				jmp_op <= "01";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "11";
+				if(jmp_en = '1' and isjump ='1') then 
+					pc_src <= "11";
+				else
+					pc_src <= "00";
+				end if;
 			-- JC
 			elsif (opcode = "11010") then
 				ccr_wr_en <= "100";
@@ -407,7 +431,11 @@ begin
 				jmp_op <= "10";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "11";
+				if(jmp_en = '1' and isjump ='1') then 
+					pc_src <= "11";
+				else
+					pc_src <= "00";
+				end if;
 			-- JMP
 			elsif (opcode = "11011") then
 				ccr_wr_en <= "000";
@@ -424,7 +452,11 @@ begin
 				jmp_op <= "11";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "11";
+				if(jmp_en = '1' and isjump ='1') then 
+					pc_src <= "11";
+				else
+					pc_src <= "00";
+				end if;
 			-- IADD
 			elsif (opcode = "11100") then
 				ccr_wr_en <= "111";
