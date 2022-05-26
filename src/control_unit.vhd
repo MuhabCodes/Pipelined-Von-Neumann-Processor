@@ -17,7 +17,6 @@ port (
 	stack_en : out std_logic;
 	mem_to_reg : out std_logic;
 	return_en : out std_logic;
-	jmp_op : out std_logic_vector(1 downto 0);
 	restore_flags : out std_logic;
 	int_en : out std_logic;
 	pc_src : out std_logic_vector(1 downto 0)
@@ -31,7 +30,7 @@ end entity;
 
 architecture struct of control_unit is
 
-	component mux4x1 is 
+component mux4x1 is 
 generic (n: integer := 32);
 port (
     in1, in2, in3, in4 : in std_logic_vector (n - 1 downto 0);
@@ -40,11 +39,15 @@ port (
 );
 end component mux4x1;
 
-signal isjump: std_logic;
+signal ccr_2, ccr_1, ccr_0, is_jump: std_logic_vector(0 downto 0);
+signal jmp_op : std_logic_vector(1 downto 0);
 signal jmp_en: std_logic;
 
 begin
-	jumpCU: mux4x1 generic port (1) port map ("1",CCR_out(2),CCR_out(1),CCR_out(0),jmp_op,isjump);
+	ccr_0(0) <= ccr_out(0);
+	ccr_1(0) <= ccr_out(1);
+	ccr_2(0) <= ccr_out(2);
+	jumpCU: mux4x1 generic map (1) port map (ccr_0, ccr_1, ccr_2, "1", jmp_op, is_jump);
 
 	process(clk) is
 	begin
@@ -389,7 +392,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				if(jmp_en = '1' and isjump ='1') then 
+				if (jmp_en = '1' and is_jump = "1") then 
 					pc_src <= "11";
 				else
 					pc_src <= "00";
@@ -410,7 +413,7 @@ begin
 				jmp_op <= "01";
 				restore_flags <= '0';
 				int_en <= '0';
-				if(jmp_en = '1' and isjump ='1') then 
+				if(jmp_en = '1' and is_jump = "1") then 
 					pc_src <= "11";
 				else
 					pc_src <= "00";
@@ -431,7 +434,7 @@ begin
 				jmp_op <= "10";
 				restore_flags <= '0';
 				int_en <= '0';
-				if(jmp_en = '1' and isjump ='1') then 
+				if(jmp_en = '1' and is_jump = "1") then 
 					pc_src <= "11";
 				else
 					pc_src <= "00";
@@ -452,7 +455,7 @@ begin
 				jmp_op <= "11";
 				restore_flags <= '0';
 				int_en <= '0';
-				if(jmp_en = '1' and isjump ='1') then 
+				if(jmp_en = '1' and is_jump = "1") then 
 					pc_src <= "11";
 				else
 					pc_src <= "00";
