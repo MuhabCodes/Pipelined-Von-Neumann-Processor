@@ -25,8 +25,11 @@ PORT(
  ALU_src: in std_logic;  --control signal to choose the second source in ALU op
  ALU_op: in std_logic_vector (4 downto 0); --control signal to choose ALU operation
 
- Rd: in std_logic_vector(31 downto 0);
- Rs: in std_logic_vector(31 downto 0);
+ Rd_in: in std_logic_vector(31 downto 0);
+ Rs_in: in std_logic_vector(31 downto 0);
+ Rt_in: in std_logic_vector(31 downto 0);
+ 
+ buffer_PC_in:in std_logic_vector(31 downto 0);
 
  restore_flags:  in std_logic; --control signal to choose ccr input
  CCR_write_en:  in std_logic_vector(2 downto 0);
@@ -41,8 +44,12 @@ PORT(
  ALU_out: out std_logic_vector(31 downto 0); --output of the ALU operation goes to buffer
  OUT_PORT:out std_logic_vector(31 downto 0);
  
- Rd_Rs_Out: out std_logic_vector(31 downto 0)
+ Rd_Rs_Out: out std_logic_vector(31 downto 0);
+ Rs_out: out std_logic_vector(31 downto 0);--going to forwarding unit
+ Rt_out: out std_logic_vector(31 downto 0);--going to forwarding unit
+ Rd_out: out std_logic_vector(31 downto 0);--going to hazard detection unit
 
+ buffer_PC_out:out std_logic_vector(31 downto 0)
 );
 END ENTITY;
 
@@ -102,6 +109,12 @@ constant zeros : std_logic_vector (31 downto 0):= (others => '0');
 
 BEGIN
 
+--connecting the input output lines
+ Rt_out<=  Rt_in;
+ Rs_out<=  Rs_in;
+ Rd_out<=  Rd_in;
+ buffer_PC_out<=buffer_PC_in;
+
 --Multiplexer to get which second source to be used based on forwarding unit
 MUX1: mux4x1  GENERIC MAP (32) PORT MAP (Rsrc2_mem , Rsrc2_wb ,Rsrc2_instruction,zeros,isForward2,Rsrc_chosen2);
 
@@ -118,7 +131,7 @@ ALUOP: ALU PORT MAP (ALU_Rsrc1,ALU_Rsrc2,ALU_op, output_ALU,update_Flag);
 MUX4: mux2x1  GENERIC MAP (32) PORT MAP (output_ALU,IN_PORT ,in_select,output_INMUX);
 
 --7aga liha 3elaka bel load ->check ma3 khadija
-MUX5: mux2x1  GENERIC MAP (32) PORT MAP (Rd,Rs,ALU_op(3),Rd_Rs_Out);
+MUX5: mux2x1  GENERIC MAP (32) PORT MAP (Rd_in,Rs_in,ALU_op(3),Rd_Rs_Out);
 
 --Multiplexer to choose the input of the CCR
 MUX6: mux2x1  GENERIC MAP (3) PORT MAP (update_Flag,SaveFlage_out,restore_flags,CCR_in);
