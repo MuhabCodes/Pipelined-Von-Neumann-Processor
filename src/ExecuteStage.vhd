@@ -11,23 +11,23 @@ PORT(
  IN_PORT : in std_logic_vector(31 downto 0); --value comming from input port
  in_select: in std_logic ;--control signal to choose betweet in port and ALU output to be in the buffer
 
- Rsrc2_mem : in std_logic_vector(31 downto 0);
- Rsrc2_wb : in std_logic_vector(31 downto 0);
+ Rsrc2_mem_in : in std_logic_vector(31 downto 0);
+ Rsrc2_wb_in : in std_logic_vector(31 downto 0);
  Rsrc2_instruction : in std_logic_vector(31 downto 0);
  isForward2 : in std_logic_vector(1 downto 0); --output of forwarding unit to chhose which source2 regitser value to use
  
 
- Rsrc1_mem : in std_logic_vector(31 downto 0);
- Rsrc1_wb : in std_logic_vector(31 downto 0);
+ Rsrc1_mem_in : in std_logic_vector(31 downto 0);
+ Rsrc1_wb_in : in std_logic_vector(31 downto 0);
  Rsrc1_instruction : in std_logic_vector(31 downto 0);
  isForward1 : in std_logic_vector(1 downto 0); --output of forwarding unit to chhose which source1 regitser value to use
 
  ALU_src: in std_logic;  --control signal to choose the second source in ALU op
  ALU_op: in std_logic_vector (4 downto 0); --control signal to choose ALU operation
 
- Rd_in: in std_logic_vector(31 downto 0);
- Rs_in: in std_logic_vector(31 downto 0);
- Rt_in: in std_logic_vector(31 downto 0);
+ Rd_in: in std_logic_vector(2 downto 0);
+ Rs_in: in std_logic_vector(2 downto 0);
+ Rt_in: in std_logic_vector(2 downto 0);
  
  buffer_PC_in:in std_logic_vector(31 downto 0);
 
@@ -43,11 +43,14 @@ PORT(
  
  ALU_out: out std_logic_vector(31 downto 0); --output of the ALU operation goes to buffer
  OUT_PORT:out std_logic_vector(31 downto 0);
- 
- Rd_Rs_Out: out std_logic_vector(31 downto 0);
- Rs_out: out std_logic_vector(31 downto 0);--going to forwarding unit
- Rt_out: out std_logic_vector(31 downto 0);--going to forwarding unit
- Rd_out: out std_logic_vector(31 downto 0);--going to hazard detection unit
+
+ Rsrc1_mem_out : out std_logic_vector(31 downto 0);--putting the sources in the ex/mem buffer so we can use them in forwarding
+ Rsrc2_mem_out: out std_logic_vector(31 downto 0);
+
+ Rd_Rs_Out: out std_logic_vector(2 downto 0);
+ Rs_out: out std_logic_vector(2 downto 0);--going to forwarding unit
+ Rt_out: out std_logic_vector(2 downto 0);--going to forwarding unit
+ Rd_out: out std_logic_vector(2 downto 0);--going to hazard detection unit
 
  buffer_PC_out:out std_logic_vector(31 downto 0)
 );
@@ -114,15 +117,17 @@ BEGIN
  Rs_out<=  Rs_in;
  Rd_out<=  Rd_in;
  buffer_PC_out<=buffer_PC_in;
+ Rsrc1_mem_out<=Rsrc1_instruction;--to be used from buffer in the next instructions
+ Rsrc2_mem_out<=Rsrc2_instruction;
 
 --Multiplexer to get which second source to be used based on forwarding unit
-MUX1: mux4x1  GENERIC MAP (32) PORT MAP (Rsrc2_mem , Rsrc2_wb ,Rsrc2_instruction,zeros,isForward2,Rsrc_chosen2);
+MUX1: mux4x1  GENERIC MAP (32) PORT MAP (Rsrc2_mem_in , Rsrc2_wb_in ,Rsrc2_instruction,zeros,isForward2,Rsrc_chosen2);
 
 --Multiplexer to choose between source and immediate value based on a control signal
 MUX2: mux2x1  GENERIC MAP (32) PORT MAP (MUX_ALU_imm ,Rsrc_chosen2,ALU_src,ALU_Rsrc2);
 
 --Multiplexer to get which first source to be used based on forwarding unit
-MUX3: mux4x1  GENERIC MAP (32) PORT MAP (Rsrc1_mem , Rsrc1_wb ,Rsrc1_instruction,zeros,isForward1,ALU_Rsrc1);
+MUX3: mux4x1  GENERIC MAP (32) PORT MAP (Rsrc1_mem_in , Rsrc1_wb_in ,Rsrc1_instruction,zeros,isForward1,ALU_Rsrc1);
 
 --ALU operation
 ALUOP: ALU PORT MAP (ALU_Rsrc1,ALU_Rsrc2,ALU_op, output_ALU,update_Flag);
