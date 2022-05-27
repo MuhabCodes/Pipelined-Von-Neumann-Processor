@@ -19,7 +19,7 @@ port (
 	return_en : out std_logic;
 	restore_flags : out std_logic;
 	int_en : out std_logic;
-	pc_src : out std_logic_vector(1 downto 0);
+	pc_src : out std_logic;
     flush_if : out std_logic;
 	flush_id : out std_logic;
 	flush_ex : out std_logic;
@@ -42,7 +42,6 @@ end component mux4x1;
 signal ccr_2, ccr_1, ccr_0, is_jump: std_logic_vector(0 downto 0);
 signal jmp_op : std_logic_vector(1 downto 0);
 signal jmp_en: std_logic;
-signal pc_src_signal: std_logic_vector(1 downto 0):=(others=>'0');
 
 begin
 	ccr_0(0) <= ccr_out(0);
@@ -52,7 +51,6 @@ begin
 
 	process(clk) is
 	begin
-		
 		if rising_edge(clk) then 
 			if (opcode = "XXXXX") then
 				ccr_wr_en <= "000";
@@ -69,7 +67,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- NOP
 			elsif (opcode = "00000") then
 				ccr_wr_en <= "000";
@@ -86,7 +84,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- HLT
 			elsif (opcode = "00001") then
 				ccr_wr_en <= "000";
@@ -103,7 +101,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- SETC
 			elsif (opcode = "00010") then
 				ccr_wr_en <= "100";
@@ -120,7 +118,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- RET
 			elsif (opcode = "00011") then
 				ccr_wr_en <= "000";
@@ -137,7 +135,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "01";
+				pc_src <= '0';
 			-- RTI
 			elsif (opcode = "00100") then
 				ccr_wr_en <= "111";
@@ -154,7 +152,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '1';
 				int_en <= '0';
-				pc_src <= "01";
+				pc_src <= '0';
 			-- PUSH
 			elsif (opcode = "01000") then
 				ccr_wr_en <= "000";
@@ -171,7 +169,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- POP
 			elsif (opcode = "01001") then
 				ccr_wr_en <= "000";
@@ -188,7 +186,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- OUT
 			elsif (opcode = "01010") then
 				ccr_wr_en <= "000";
@@ -205,7 +203,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- IN
 			elsif (opcode = "01011") then
 				ccr_wr_en <= "000";
@@ -222,7 +220,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- CALL
 			elsif (opcode = "01100") then
 				ccr_wr_en <= "000";
@@ -239,7 +237,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- INT
 			elsif (opcode = "01101") then
 				ccr_wr_en <= "000";
@@ -256,7 +254,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '1';
-				pc_src <= "00";
+				pc_src <= '0';
 			end if;
 			-- INC
 			elsif (opcode = "01110") then
@@ -274,7 +272,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- NOT
 			elsif (opcode = "01111") then
 				ccr_wr_en <= "011";
@@ -291,7 +289,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- MOV
 			elsif (opcode = "10000") then
 				ccr_wr_en <= "000";
@@ -308,7 +306,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- SWAP
 			elsif (opcode = "10001") then
 				ccr_wr_en <= "000";
@@ -325,7 +323,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- ADD
 			elsif (opcode = "10010") then
 				ccr_wr_en <= "111";
@@ -342,7 +340,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- SUB
 			elsif (opcode = "10011") then
 				ccr_wr_en <= "111";
@@ -359,7 +357,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- AND
 			elsif (opcode = "10100") then
 				ccr_wr_en <= "111";
@@ -376,7 +374,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- JZ
 			elsif (opcode = "11000") then
 				ccr_wr_en <= "001";
@@ -394,10 +392,12 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				if (jmp_en = '1' and is_jump = "1") then 
-					pc_src <= "11";
-					pc_src_signal<= "11";
+					pc_src <= '1';
+					flush_ex <= '1';
+					flush_id <='1';
+					flush_if <= '1';
 				else
-					pc_src <= "00";
+					pc_src <= '0';
 				end if;
 			-- JN
 			elsif (opcode = "11001") then
@@ -416,10 +416,12 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				if(jmp_en = '1' and is_jump = "1") then 
-					pc_src <= "11";
-					pc_src_signal<= "11";
+					pc_src <= '1';
+					flush_ex <= '1';
+					flush_id <='1';
+					flush_if <= '1';
 				else
-					pc_src <= "00";
+					pc_src <= '0';
 				end if;
 			-- JC
 			elsif (opcode = "11010") then
@@ -438,10 +440,12 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				if(jmp_en = '1' and is_jump = "1") then 
-					pc_src <= "11";
-					pc_src_signal<= "11";
+					pc_src <= '1';
+					flush_ex <= '1';
+					flush_id <='1';
+					flush_if <= '1';
 				else
-					pc_src <= "00";
+					pc_src <= '0';
 				end if;
 			-- JMP
 			elsif (opcode = "11011") then
@@ -460,10 +464,12 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				if(jmp_en = '1' and is_jump = "1") then 
-					pc_src <= "11";
-					pc_src_signal<= "11";
+					pc_src <= '1';
+					flush_ex <= '1';
+					flush_id <='1';
+					flush_if <= '1';
 				else
-					pc_src <= "00";
+					pc_src <= '0';
 				end if;
 			-- IADD
 			elsif (opcode = "11100") then
@@ -481,7 +487,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- LDM
 			elsif (opcode = "11101") then
 				ccr_wr_en <= "000";
@@ -498,7 +504,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- LDD
 			elsif (opcode = "11110") then
 				ccr_wr_en <= "000";
@@ -515,7 +521,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
+				pc_src <= '0';
 			-- STD
 			elsif (opcode = "11111") then
 				ccr_wr_en <= "000";
@@ -532,18 +538,7 @@ begin
 				jmp_op <= "00";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= "00";
-		end if;
-	end process;
-
-	
-	process(clk)
-		begin
-			if(pc_src_signal = "11")then
-				flush_ex <= '1';
-				flush_id <='1';
-				flush_if <= '1';
-				--flush_wb<= '1';
+				pc_src <= '0';
 		end if;
 	end process;
 end architecture;
