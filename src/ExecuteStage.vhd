@@ -34,12 +34,12 @@ PORT(
  restore_flags:  in std_logic; --control signal to choose ccr input
  CCR_write_en:  in std_logic_vector(2 downto 0);
  INT_en: in std_logic; --interrupt enable control signal
- flush_ex: in std_logic; --control signal for flushing
- WB_en_in: in std_logic_vector(0 downto 0);
- MEM_en_in:in std_logic_vector(0 downto 0);
+ 
+ WB_en_in: in std_logic;
+ MEM_en_in:in std_logic;
 
- WB_en_out:out std_logic_vector(0 downto 0);
- MEM_en_out:out std_logic_vector(0 downto 0);
+ WB_en_out:out std_logic;
+ MEM_en_out:out std_logic;
  
  ALU_out: out std_logic_vector(31 downto 0); --output of the ALU operation goes to buffer
  OUT_PORT:out std_logic_vector(31 downto 0);
@@ -99,6 +99,14 @@ generic (n: integer := 32);
     	sel : in  std_logic;
     	out1: out std_logic_vector (n - 1 downto 0));
 END COMPONENT ;
+ 
+COMPONENT  mux2x1_1bit is 
+port (
+    in1, in2 : in std_logic;
+    sel : in  std_logic;
+    out1: out std_logic
+);
+END COMPONENT ;
 
 SIGNAL Rsrc_chosen2 :std_logic_vector(31 downto 0);
 
@@ -147,8 +155,8 @@ MUX6: mux2x1  GENERIC MAP (3) PORT MAP (update_Flag,SaveFlag_out,restore_flags,C
 CCR1: CCR  PORT MAP (clk,CCR_write_en,CCR_in,CCR_out);
 CCR2: SaveFlags PORT MAP (CCR_out,SaveFlag_out,INT_en,clk);
 
---Multiplexers for flushing
-MUX7: mux2x1  GENERIC MAP (1) PORT MAP (WB_en_in,"0",flush_ex,WB_en_out);
-MUX8: mux2x1  GENERIC MAP (1) PORT MAP (MEM_en_in,"0",flush_ex,MEM_en_out);
+WB_en_out<=WB_en_in;
+MEM_en_out<=MEM_en_in;
+
 
 END ARCHITECTURE;
