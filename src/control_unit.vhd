@@ -42,6 +42,7 @@ end component mux4x1;
 signal ccr_2, ccr_1, ccr_0, is_jump: std_logic_vector(0 downto 0);
 signal jmp_op : std_logic_vector(1 downto 0);
 signal jmp_en: std_logic;
+signal pc_src_signal: std_logic_vector(1 downto 0):=(others=>'0');
 
 begin
 	ccr_0(0) <= ccr_out(0);
@@ -394,6 +395,7 @@ begin
 				int_en <= '0';
 				if (jmp_en = '1' and is_jump = "1") then 
 					pc_src <= "11";
+					pc_src_signal<= "11";
 				else
 					pc_src <= "00";
 				end if;
@@ -415,6 +417,7 @@ begin
 				int_en <= '0';
 				if(jmp_en = '1' and is_jump = "1") then 
 					pc_src <= "11";
+					pc_src_signal<= "11";
 				else
 					pc_src <= "00";
 				end if;
@@ -436,6 +439,7 @@ begin
 				int_en <= '0';
 				if(jmp_en = '1' and is_jump = "1") then 
 					pc_src <= "11";
+					pc_src_signal<= "11";
 				else
 					pc_src <= "00";
 				end if;
@@ -457,6 +461,7 @@ begin
 				int_en <= '0';
 				if(jmp_en = '1' and is_jump = "1") then 
 					pc_src <= "11";
+					pc_src_signal<= "11";
 				else
 					pc_src <= "00";
 				end if;
@@ -530,13 +535,15 @@ begin
 				pc_src <= "00";
 		end if;
 	end process;
+
+	
 	process(clk)
 		begin
-			if(pc_src = '11')
-				flush_ex = '1';
-				flush_id ='1';
-				flush_if = '1';
-				--flush_wb= '1';
+			if(pc_src_signal = "11")then
+				flush_ex <= '1';
+				flush_id <='1';
+				flush_if <= '1';
+				--flush_wb<= '1';
 		end if;
 	end process;
 end architecture;
