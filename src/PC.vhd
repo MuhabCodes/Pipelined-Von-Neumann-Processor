@@ -7,9 +7,9 @@ use ieee.std_logic_unsigned.all;
 entity program_counter is 
 port ( 
     clk: in  std_logic ;
-    pc_write: in std_logic
+    pc_write: in std_logic;
     input: in  std_logic_vector (31 downto 0);
-    output: out std_logic_vector (31 downto 0);
+    output: out std_logic_vector (31 downto 0)
 );
 end entity; 
 
