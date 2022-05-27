@@ -74,7 +74,7 @@ port (
 	jmp_op : out std_logic_vector(1 downto 0);
 	restore_flags : out std_logic;
 	int_en : out std_logic;
-	pc_src : out std_logic_vector(1 downto 0);
+	pc_src : out std_logic_vector(1 downto 0)
 );
 end component;
 
@@ -96,7 +96,7 @@ begin
     Rs<=Instruction(7 downto 5);
     Rt<=Instruction(10 downto 8);
     Rd<=Instruction(13 downto 11);
-    addingPc: adder generic port (2) port map ('0',"10",bit5INTindex,index, open);
+    addingPc: adder generic map (2) port map ('0',"10",bit5INTindex,index, open);
 
 
 

@@ -5,10 +5,10 @@ use ieee.numeric_std.all;
 
 entity registersFile is
     port(
-        reg_write: in std_logic;
+        reg_write: in std_logic;-- write enable in register file
         clk, rst: in std_logic;
-        Rsrc1,Rsrc2: in std_logic_vector(2 downto 0);
-        write_reg: in std_logic_vector(2 downto 0);
+        Rsrc1,Rsrc2: in std_logic_vector(2 downto 0); --reading source adresses
+        write_reg: in std_logic_vector(2 downto 0); --writing destination adresses
         write_data: in std_logic_vector(31 downto 0);
         read_data1,read_data2: out std_logic_vector(31 downto 0)
     );
