@@ -1,31 +1,31 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
 
 
-entity programCounter is 
+entity program_counter is 
+port ( 
+    clk: in  std_logic ;
+    pc_write: in std_logic
+    input: in  std_logic_vector (31 downto 0);
+    output: out std_logic_vector (31 downto 0);
+);
+end entity; 
 
-port (  CLK: in  std_logic ;
-        input: in  std_logic_vector (31 downTO 0);
-        output: out std_logic_vector (31 downTO 0);
-        PC_write: in std_logic
-        );
- 
-end programCounter ;
 
 
-Architecture arch_programCounter of programCounter is 
-BEGIN
-PROCESS (Clk)
-BEGIN
-    if rising_edge(Clk) THEN
-        if(PC_write ='1') then
+architecture arch_programCounter of program_counter is 
+begin
+process (clk)
+begin
+    if rising_edge(clk) then
+        if(pc_write ='1') then
             output <= input;
         end if;
     end if ;
-END PROCESS;
-end Architecture;
+end process;
+end architecture;
 
 
 
