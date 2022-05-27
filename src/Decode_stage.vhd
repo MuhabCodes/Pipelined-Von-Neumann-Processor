@@ -8,21 +8,20 @@ entity decode_stage is
 
         Instruction: in std_logic_vector(31 downto 0);
 
-        ccr_wr_en : out std_logic_vector(2 downto 0);
-        reg_write : out std_logic;
-        alu_src : out std_logic;
-        alu_op : out std_logic_vector(4 downto 0);
-        alu_imm : out std_logic;
-        mem_write : out std_logic;
-        mem_read : out std_logic;
-        stack_en : out std_logic;
-        mem_to_reg : out std_logic;
-        return_en : out std_logic;
-        jmp_en : out std_logic;
-        jmp_op : out std_logic_vector(1 downto 0);
-        restore_flags : out std_logic;
-        int_en : out std_logic;
-        pc_src : out std_logic_vector(1 downto 0);
+	---CCR_OUT: in std_logic_vector(2 downto 0);
+	ccr_wr_en : out std_logic_vector(2 downto 0);
+	reg_write : out std_logic;
+	alu_src : out std_logic;
+	alu_op : out std_logic_vector(4 downto 0);
+	alu_imm : out std_logic;
+	mem_write : out std_logic;
+	mem_read : out std_logic;
+	stack_en : out std_logic;
+	mem_to_reg : out std_logic;
+	return_en : out std_logic;
+	restore_flags : out std_logic;
+	int_en : out std_logic;
+	pc_src : out std_logic_vector(1 downto 0);
         --Rsrc1,Rsrc2: out std_logic_vector(2 downto 0);
 
         writeData: in std_logic_vector(31 downto 0);
@@ -58,8 +57,9 @@ end component;
 
 component control_unit IS
 port (
-	clk : in std_logic;
+clk : in std_logic;
 	opcode : in std_logic_vector(4 downto 0);
+	CCR_OUT: in std_logic_vector(2 downto 0);
 	ccr_wr_en : out std_logic_vector(2 downto 0);
 	reg_write : out std_logic;
 	alu_src : out std_logic;
@@ -70,11 +70,9 @@ port (
 	stack_en : out std_logic;
 	mem_to_reg : out std_logic;
 	return_en : out std_logic;
-	jmp_en : out std_logic;
-	jmp_op : out std_logic_vector(1 downto 0);
 	restore_flags : out std_logic;
 	int_en : out std_logic;
-	pc_src : out std_logic_vector(1 downto 0);
+	pc_src : out std_logic_vector(1 downto 0)
 );
 end component;
 
@@ -89,14 +87,16 @@ port(
 end component;
 
 signal bit5INTindex: std_logic_vector(1 downto 0):='0' & Instruction(5);
+signal cURegWrite: std_logic;
 
 begin
-    controlUn: control_unit port map(clk, Instruction(4 downto 0), ccr_wr_en, reg_write, alu_src, alu_op, alu_imm, mem_write, mem_read, stack_en, mem_to_reg, return_en, jmp_en, jmp_op, restore_flags, int_en, pc_src);
-    RegistersComp: registersFile port map (reg_write, clk, rst, Instruction(7 downto 5), Instruction(10 downto 8), writeReg, writeData, readData1, readData2);
+    controlUn: control_unit port map(clk, Instruction(4 downto 0), CCR_out,ccr_wr_en, cURegWrite, alu_src, alu_op, alu_imm, mem_write, mem_read, stack_en, mem_to_reg, return_en,restore_flags, int_en, pc_src);
+   reg_write<=cURegWrite;
+RegistersComp: registersFile port map (cURegWrite, clk, rst, Instruction(7 downto 5), Instruction(10 downto 8), writeReg, writeData, readData1, readData2);
     Rs<=Instruction(7 downto 5);
     Rt<=Instruction(10 downto 8);
     Rd<=Instruction(13 downto 11);
-    addingPc: adder generic port (2) port map ('0',"10",bit5INTindex,index, open);
+    addingPc: adder generic map (2) port map ('0',"10",bit5INTindex,index, open);
 
 
 
