@@ -16,10 +16,10 @@ entity decode_stage is
         hazard_results: in std_logic;
 
         --other inputs
-        writeData: in std_logic_vector(31 downto 0);
-        writeReg: in std_logic_vector(2 downto 0);
+        writeData: in std_logic_vector(31 downto 0);--data read from memory
+        writeReg: in std_logic_vector(2 downto 0);--destination register
         PC_in: in std_logic_vector(31 downto 0);
-        --IMM_in: in std_logic_vector(31 downto 0);
+        IMM_in: in std_logic_vector(31 downto 0);
 
         --outputs
         Pc_out: out std_logic_vector(31 downto 0);
@@ -28,17 +28,8 @@ entity decode_stage is
         index: out std_logic_vector(1 downto 0);
         WBenSignal:out  std_logic;
         MEMenSignal: out std_logic;
-        ExenSignal: out std_logic
-        
-      
-
-
-
-
-
---to do:
----muxx bt3 el mem wb ex signals lesa msh m3mol
---hazard detection unit
+        ExenSignal: out std_logic;
+        IMM_out: out std_logic_vector(31 downto 0)
     );
 end entity;
 
@@ -54,27 +45,6 @@ component registersFile is
         read_data1,read_data2: out std_logic_vector(31 downto 0)
     );
 end component;
-
--- component control_unit IS
--- port (
--- clk : in std_logic;
--- 	opcode : in std_logic_vector(4 downto 0);
--- 	CCR_OUT: in std_logic_vector(2 downto 0);
--- 	ccr_wr_en : out std_logic_vector(2 downto 0);
--- 	reg_write : out std_logic;
--- 	alu_src : out std_logic;
--- 	alu_op : out std_logic_vector(4 downto 0);
--- 	alu_imm : out std_logic;
--- 	mem_write : out std_logic;
--- 	mem_read : out std_logic;
--- 	stack_en : out std_logic;
--- 	mem_to_reg : out std_logic;
--- 	return_en : out std_logic;
--- 	restore_flags : out std_logic;
--- 	int_en : out std_logic;
--- 	pc_src : out std_logic_vector(1 downto 0)
--- );
--- end component;
 
 component adder is
 generic (n: integer := 16);
@@ -95,29 +65,21 @@ port (
 end component;
 
 signal bit5INTindex: std_logic_vector(1 downto 0);
---signal cURegWrite: std_logic;
 signal LoadUseAndFlush: std_logic;
--- 
-
-
 
 begin
-    --controlUn: control_unit port map(CLK, Instruction(4 downto 0), CCR_out,ccr_wr_en, cURegWrite, alu_src, alu_op, alu_imm, mem_write, mem_read, stack_en, mem_to_reg, return_en,restore_flags, int_en, pc_src,flush_if,flush_id,flush_ex,flush_wb);
-   --reg_write<=cURegWrite;
-    bit5INTindex<='0' & Instruction(5);
-    RegistersComp: registersFile port map (reg_write, CLK, rst, Instruction(10 downto 8), Instruction(13 downto 11), writeReg, writeData, readData1, readData2);
-    Rs<=Instruction(7 downto 5);
-    Rt<=Instruction(10 downto 8);
-    Rd<=Instruction(13 downto 11);
-    addingPc: adder generic map (2) port map ('0',"10",bit5INTindex,index, open);
+   
+    bit5INTindex<='0' & Instruction(26);
+    RegistersComp: registersFile port map (reg_write, CLK, rst, Instruction(23 downto 21), Instruction(20 downto 18), writeReg, writeData, readData1, readData2);
+    Rs<=Instruction(23 downto 21);
+    Rt<=Instruction(20 downto 18);
+    Rd<=Instruction(26 downto 24);
+    pc_out<=pc_in;
+    IMM_out<=IMM_in;
+    addingPc: adder generic map (2) port map ('0', "10", bit5INTindex, index, open);
     LoadUseAndFlush<=flush_id or hazard_Results;
-    WBZeroingMux: mux2x1_1bit port map (WBen,'0',LoadUseAndFlush,WBenSignal);
-    MEMZeroingMux: mux2x1_1bit  port map (MEMen,'0',LoadUseAndFlush,MEMenSignal);
-    EXZeroingMux: mux2x1_1bit  port map (EXen,'0',LoadUseAndFlush,EXenSignal);
-
-
-
-
-
+    WBZeroingMux: mux2x1_1bit port map (WBen, '0', LoadUseAndFlush, WBenSignal);
+    MEMZeroingMux: mux2x1_1bit  port map (MEMen, '0', LoadUseAndFlush, MEMenSignal);
+    EXZeroingMux: mux2x1_1bit  port map (EXen, '0', LoadUseAndFlush, EXenSignal);
 
 end architecture rtl;
