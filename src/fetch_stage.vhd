@@ -16,6 +16,7 @@ port(
         intr_in: in std_logic;
         return_en: in std_logic;
         pc_write: in std_logic;
+        mem_write: in std_logic;
 
         --other values
         PC_buffer: in std_logic_vector(31 downto 0);
