@@ -37,11 +37,4 @@ begin
             IF_ID_write<='1';
 end if;
 end process;
-
-
-
-
-
-
-    
 end architecture HazardArch;
