@@ -25,10 +25,11 @@ entity fetchstage is
         MEM_EX_Output: in std_logic_vector(31 downto 0);
         readDataMem; in std_logic_vector(31 downto 0);
         memory_block_output: in std_logic_vector(31 down to 0);
+        EA_in: in std_logic_vector(31 downto 0);
 
         --output
         PC_out: out std_logic_vector(31 downto 0);
-        address: out std_logic_vector(31 downto 0);
+        address: out std_logic_vector(31 downto 0)
     );
 end entity;
 
