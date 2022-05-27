@@ -176,7 +176,6 @@ PORT(
 	reg2_in : in std_logic_vector(31 downto 0);
 	--- OUTPUTS
 	--- START stored control signals
-	mem_signal : out std_logic;
 	wb_signal : out std_logic;
 	--- END stored control signals
 	opcode : out std_logic_vector(31 downto 0);
@@ -236,8 +235,10 @@ SIGNAL CCR_write_en, Rd_Rs_Out,Rs_in_memBuff,Rt_in_memBuff,Rd_in_memBuff, regAdd
 
 --memory stage signals
 SIGNAL Rsrc1_mem_out, Rsrc2_mem_out,Mem_dataWrite,mem_stage_output, StroreAdress: std_logic_vector(31 downto 0);
-SIGNAL regAddress_wb: std_logic_vector(2 downto 0);
-SIGNAL wb_signal_in, mem_sig_toforward : std_logic;
+SIGNAL regAddress_wb,Write_address_in: std_logic_vector(2 downto 0);
+SIGNAL wb_signal_in, mem_sig_toforward,wb_sig_toforward : std_logic;
+
+SIGNAL Execute_out, Load_value: std_logic_vector(31 downto 0);
 BEGIN
 
 buffer1: buffer_ID_EX PORT MAP (clk,flush,ex_signal_in_id_ex ,mem_signal_in_id_ex,
@@ -273,5 +274,12 @@ mem1: MemoryStage PORT MAP (
 			regAddress,
 			regAddress_wb);--going to forwarding unit and  MEM/WB buffer
 
-
+buffer3: buffer_MEM_WB  PORT MAP (
+			clk ,flush ,wb_signal_in,mem_stage_output,execution_output,regAddress_wb,
+			Rsrc1_mem_out,--going to execute stage and the MEM/WB buffer and data write 
+			Rsrc2_mem_out,--to be used in forwarding
+			wb_sig_toforward,Load_value,Execute_out,
+			Write_address_in,--destination adress for the register file comming from buffer (Rd aw Rs) to wb stage
+			Rsrc1_wb,Rsrc2_wb);
+			
 END ARCHITECTURE;

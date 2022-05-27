@@ -16,7 +16,6 @@ reg1_in : in std_logic_vector(31 downto 0);
 reg2_in : in std_logic_vector(31 downto 0);
 --- OUTPUTS
 --- START stored control signals
-mem_signal : out std_logic;
 wb_signal : out std_logic;
 --- END stored control signals
 opcode : out std_logic_vector(31 downto 0);
