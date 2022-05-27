@@ -34,7 +34,8 @@ entity decode_stage is
         writeData: in std_logic_vector(31 downto 0);
         writeReg: in std_logic_vector(2 downto 0);
 
-        PC: in std_logic_vector(31 downto 0);
+        PC_in: in std_logic_vector(31 downto 0);
+        Pc_out: out std_logic_vector(31 downto 0);
 
         IMM_in: in std_logic_vector(31 downto 0);
         readData1,readData2: out std_logic_vector(31 downto 0);
@@ -45,9 +46,10 @@ entity decode_stage is
         
         hazard_results: in std_logic;
 
-        signal WBenSignal:out  std_logic_vector(0 downto 0);
-        signal MEMenSignal: out std_logic_vector(0 downto 0);
-        signal ExenSignal: out std_logic_vector(0 downto 0)
+         WBenSignal:out  std_logic_vector(0 downto 0);
+         MEMenSignal: out std_logic_vector(0 downto 0);
+         ExenSignal: out std_logic_vector(0 downto 0)
+        
       
 
 
