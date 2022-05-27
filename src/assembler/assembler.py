@@ -2,10 +2,6 @@ import re
 import os 
 import string
 
-from numpy import empty
-from sqlalchemy import true
-
-
 file_names = [n.removesuffix(".asm")
              for n in os.listdir("./asm") if n.endswith(".asm")]
 opcode = {'NOP': '00000',

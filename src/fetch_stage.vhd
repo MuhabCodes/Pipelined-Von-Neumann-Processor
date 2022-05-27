@@ -27,7 +27,7 @@ port(
         EA_in: in std_logic_vector(31 downto 0);
 
         --output
-        PC_out: out std_logic_vector(31 downto 0);
+        pc_out: out std_logic_vector(31 downto 0);
         address: out std_logic_vector(31 downto 0)
 );
 end entity;
@@ -71,21 +71,21 @@ signal int_en_mux: std_logic_vector(31 downto 0);
 signal RESET_IN_mux: std_logic_vector(31 downto 0);
 signal return_en_mux: std_logic_vector(31 downto 0);
 signal PC_plus_one: std_logic_vector(31 downto 0);
-signal PCinput: std_logic_vector(31 downto 0);
+signal pc_input: std_logic_vector(31 downto 0);
 signal pc_out_signal: std_logic_vector(31 downto 0);
     
 begin
     one <= (31 downto 1 => '0') & (0 downto 0 => '1');
     zero <= (31 downto 0 => '0');
-    pc_portMap: program_counter port map(clk, pc_write, PCinput, pc_out_signal);
+    pc_portMap: program_counter port map(clk, pc_write, pc_input, pc_out_signal);
     returnadding: adder generic map (32) port map ('0', one, pc_out_signal, PC_plus_one, open);
     returnenMux: mux2x1 generic map (32) port map (PC_plus_one, PC_buffer, return_en, return_en_mux);
-    pcSrcMux:  mux2x1 generic map (32) port map (EA_in, return_en_mux, pc_src, pc_src_mux);
-    controlmux:  mux2x1 generic map (32) port map (pc_src_mux, memory_block_output, control_signal, PCinput);
+    pcSrcMux:  mux2x1 generic map (32) port map (return_en_mux, EA_in, pc_src, pc_src_mux);
+    controlmux:  mux2x1 generic map (32) port map (pc_src_mux, memory_block_output, control_signal, pc_input);
     stackenmux:  mux2x1 generic map (32) port map (sp, MEM_EX_Output, stack_en, stack_en_mux);
     fetchmem:  mux2x1 generic map (32) port map (pc_out_signal, stack_en_mux, fetch_memory, fetch_mem_mux);
     intenmux:  mux2x1 generic map (32) port map (fetch_mem_mux, index, int_en, int_en_mux);
     resetINmux:  mux2x1 generic map (32) port map (int_en_mux, zero, RESET_IN, RESET_IN_mux);
-    INTRINmux:  mux2x1 generic map (32) port map (RESET_IN_mux, one, INTR_IN,address);
+    INTRINmux:  mux2x1 generic map (32) port map (RESET_IN_mux, one, INTR_IN, address);
     pc_out <= pc_out_signal;
 end architecture fetchArch;

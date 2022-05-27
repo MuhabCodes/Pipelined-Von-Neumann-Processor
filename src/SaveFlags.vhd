@@ -16,9 +16,9 @@ architecture Save_architecture of SaveFlags is
 component reg is 
 generic(n: integer :=32);
 port(
-d				:	in	std_logic_vector(n-1 downto 0);
-q				:	out	std_logic_vector(n-1 downto 0);
-en, clk, rst	:	in	std_logic
+	d				:	in	std_logic_vector(n-1 downto 0) := (others=>'0');
+	q				:	out	std_logic_vector(n-1 downto 0) := (others=>'0');
+	en, clk, rst	:	in	std_logic
 );
 end component reg ;
 
