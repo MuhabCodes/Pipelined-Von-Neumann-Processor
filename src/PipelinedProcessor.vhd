@@ -53,7 +53,7 @@ COMPONENT decode_stage is
         writeData: in std_logic_vector(31 downto 0);--data read from memory
         writeReg: in std_logic_vector(2 downto 0);--destination register
         PC_in: in std_logic_vector(31 downto 0);
-        IMM_in: in std_logic_vector(31 downto 0);
+       -- IMM_in: in std_logic_vector(15 downto 0);
 
         --outputs
         Pc_out: out std_logic_vector(31 downto 0);
@@ -63,7 +63,7 @@ COMPONENT decode_stage is
         WBenSignal:out  std_logic;
         MEMenSignal: out std_logic;
         ExenSignal: out std_logic;
-        IMM_out: out std_logic_vector(31 downto 0)
+        IMM_out: out std_logic_vector(15 downto 0)
     );
 END COMPONENT;
 
@@ -281,11 +281,11 @@ SIGNAL Execute_out, Load_value: std_logic_vector(31 downto 0);
 BEGIN
 
 
-Dstage: Decode_stage PORT MAP (clk, rst, instruction, reg_write, flush, WBen, MEMen,
-				EXen, hazard_Results, write_data,write_reg,PC_in_Dstage,IMM_in_Dstage,
+Dstage: Decode_stage PORT MAP (clk, '0', instruction, reg_write, flush, WBen, MEMen,
+				EXen, hazard_Results, write_data,write_reg,PC_in_Dstage,
 				pc_in, reg1_in_ex,reg2_in_ex,Rd_in_exBuff,Rs_in_exBuff,Rt_in_exBuff, 
 				index_out_DStage,wb_signal_in_id_ex,mem_signal_in_id_ex,ex_signal_in_id_ex,
-				imm_ea_extend);
+				imm_ea_in);
 
 
 buffer1: buffer_ID_EX PORT MAP (clk,flush,ex_signal_in_id_ex ,mem_signal_in_id_ex,
