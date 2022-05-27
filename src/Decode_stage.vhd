@@ -19,7 +19,7 @@ entity decode_stage is
         writeData: in std_logic_vector(31 downto 0);--data read from memory
         writeReg: in std_logic_vector(2 downto 0);--destination register
         PC_in: in std_logic_vector(31 downto 0);
-        IMM_in: in std_logic_vector(31 downto 0);
+       -- IMM_in: in std_logic_vector(15 downto 0);
 
         --outputs
         Pc_out: out std_logic_vector(31 downto 0);
@@ -29,7 +29,7 @@ entity decode_stage is
         WBenSignal:out  std_logic;
         MEMenSignal: out std_logic;
         ExenSignal: out std_logic;
-        IMM_out: out std_logic_vector(31 downto 0)
+        IMM_out: out std_logic_vector(15 downto 0)
     );
 end entity;
 
@@ -75,7 +75,7 @@ begin
     Rt<=Instruction(20 downto 18);
     Rd<=Instruction(26 downto 24);
     pc_out<=pc_in;
-    IMM_out<=IMM_in;
+    IMM_out<= instruction(15 downto 0);
     addingPc: adder generic map (2) port map ('0', "10", bit5INTindex, index, open);
     LoadUseAndFlush<=flush_id or hazard_Results;
     WBZeroingMux: mux2x1_1bit port map (WBen, '0', LoadUseAndFlush, WBenSignal);

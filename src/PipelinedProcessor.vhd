@@ -36,6 +36,36 @@ PORT(
 	flush_wb : out std_logic);
 END COMPONENT ;
 
+COMPONENT decode_stage is
+    port(
+        CLK,rst:in std_logic;
+        Instruction: in std_logic_vector(31 downto 0);
+
+        --control signals
+	    reg_write : in std_logic;
+	    flush_id : in std_logic;
+        WBen: in std_logic;
+        MEMen:in std_logic;
+        EXen:in std_logic;
+        hazard_results: in std_logic;
+
+        --other inputs
+        writeData: in std_logic_vector(31 downto 0);--data read from memory
+        writeReg: in std_logic_vector(2 downto 0);--destination register
+        PC_in: in std_logic_vector(31 downto 0);
+        IMM_in: in std_logic_vector(31 downto 0);
+
+        --outputs
+        Pc_out: out std_logic_vector(31 downto 0);
+        readData1,readData2: out std_logic_vector(31 downto 0);
+        Rd, Rs,Rt: out std_logic_vector(2 downto 0);
+        index: out std_logic_vector(1 downto 0);
+        WBenSignal:out  std_logic;
+        MEMenSignal: out std_logic;
+        ExenSignal: out std_logic;
+        IMM_out: out std_logic_vector(31 downto 0)
+    );
+END COMPONENT;
 
 COMPONENT buffer_ID_EX is 
 PORT(
@@ -213,6 +243,15 @@ PORT(
         read_data1,read_data2: out std_logic_vector(31 downto 0));
 END COMPONENT ;
 
+--Decode stage signals
+SIGNAL reg_write, flush_id, WBen, MEMen, EXen, hazard_Results: std_logic; --control signals in
+SIGNAL Instruction, write_data, PC_in_Dstage, IMM_in_Dstage: std_logic_vector(31 downto 0); --input addresses/instruction
+SIGNAL write_reg: std_logic_vector(2 downto 0);--desitnation register address
+--SIGNAL pc_out_Dstage, readData1, readData2, IMM_out_Dstage: std_logic_vector(31 downto 0); -- 32 bit outputs
+SIGNAL Rd_Dstage, Rs_Dstage, Rt_Dstage: std_logic_vector(2 downto 0);--output registers
+SIGNAL WBenSignal_DStage, MEMenSignal_DStage, EXenSignal_DStage: std_logic; --control signals out
+SIGNAL index_out_DStage: std_logic_vector(1 downto 0);--index of pc 
+
 --ID/EX BUFFER SIGNALS
 SIGNAL flush,ex_signal_in_id_ex ,mem_signal_in_id_ex,wb_signal_in_id_ex: std_logic; --control signals inputs
 SIGNAL ex_signal, mem_en_ex, wb_en_ex,ID_EX_MemRead: std_logic; --control signals output
@@ -241,11 +280,20 @@ SIGNAL wb_signal_in, mem_sig_toforward,wb_sig_toforward : std_logic;
 SIGNAL Execute_out, Load_value: std_logic_vector(31 downto 0);
 BEGIN
 
+
+Dstage: Decode_stage PORT MAP (clk, rst, instruction, reg_write, flush, WBen, MEMen,
+				EXen, hazard_Results, write_data,write_reg,PC_in_Dstage,IMM_in_Dstage,
+				pc_in, reg1_in_ex,reg2_in_ex,Rd_in_exBuff,Rs_in_exBuff,Rt_in_exBuff, 
+				index_out_DStage,wb_signal_in_id_ex,mem_signal_in_id_ex,ex_signal_in_id_ex,
+				imm_ea_extend);
+
+
 buffer1: buffer_ID_EX PORT MAP (clk,flush,ex_signal_in_id_ex ,mem_signal_in_id_ex,
 				wb_signal_in_id_ex, pc_in,reg1_in_ex,reg2_in_ex ,imm_ea_in,
 				Rs_in_exBuff,Rt_in_exBuff,Rd_in_exBuff ,ex_signal, mem_en_ex,
 				wb_en_ex,buffer_PC,Rsrc1_instruction,Rsrc2_instruction,IMM,
 				Rs_out_exBuff,Rt_out_exBuff,Rd_out_exBuff,ID_EX_MemRead);
+
 
 ex: ExecuteStage PORT MAP (
    				clk,IMM,IN_PORT,in_select,Rsrc2_mem,Rsrc2_wb,Rsrc2_instruction,
