@@ -46,9 +46,9 @@ entity decode_stage is
         
         hazard_results: in std_logic;
 
-         WBenSignal:out  std_logic_vector(0 downto 0);
-         MEMenSignal: out std_logic_vector(0 downto 0);
-         ExenSignal: out std_logic_vector(0 downto 0)
+         WBenSignal:out  std_logic;
+         MEMenSignal: out std_logic;
+         ExenSignal: out std_logic;
         
       
 
@@ -106,12 +106,11 @@ port(
 );
 end component;
 
-component mux2x1 is 
-generic (n: integer := 32);
+component mux2x1_1bit is
 port (
-    in1, in2 : in std_logic_vector (n - 1 downto 0);
+    in1, in2 : in std_logic;
     sel : in  std_logic;
-    out1: out std_logic_vector (n - 1 downto 0)
+    out1: out std_logic
 );
 end component;
 
@@ -119,27 +118,23 @@ signal bit5INTindex: std_logic_vector(1 downto 0);
 --signal cURegWrite: std_logic;
 signal LoadUseAndFlush: std_logic;
 -- 
-signal WBVector: std_logic_vector(0 downto 0);
-signal MEMVector: std_logic_vector(0 downto 0);
-signal EXVector: std_logic_vector(0 downto 0);
+
 
 
 begin
     --controlUn: control_unit port map(CLK, Instruction(4 downto 0), CCR_out,ccr_wr_en, cURegWrite, alu_src, alu_op, alu_imm, mem_write, mem_read, stack_en, mem_to_reg, return_en,restore_flags, int_en, pc_src,flush_if,flush_id,flush_ex,flush_wb);
    --reg_write<=cURegWrite;
 bit5INTindex<='0' & Instruction(5);
-   WBVector(0)<=WBen;
-   EXVector(0)<=EXen;
-   MEMVector(0)<=MEMen;
+
     RegistersComp: registersFile port map (reg_write, CLK, rst, Instruction(10 downto 8), Instruction(13 downto 11), writeReg, writeData, readData1, readData2);
     Rs<=Instruction(7 downto 5);
     Rt<=Instruction(10 downto 8);
     Rd<=Instruction(13 downto 11);
     addingPc: adder generic map (2) port map ('0',"10",bit5INTindex,index, open);
     LoadUseAndFlush<=flush_id or hazard_Results;
-    WBZeroingMux: mux2x1 generic map (1) port map (WBVector,"0",LoadUseAndFlush,WBenSignal);
-    MEMZeroingMux: mux2x1 generic map (1) port map (MEMVector,"0",LoadUseAndFlush,MEMenSignal);
-    EXZeroingMux: mux2x1 generic map (1) port map (EXVector,"0",LoadUseAndFlush,EXenSignal);
+    WBZeroingMux: mux2x1_1bit port map (WBen,'0',LoadUseAndFlush,WBenSignal);
+    MEMZeroingMux: mux2x1_1bit  port map (MEMen,'0',LoadUseAndFlush,MEMenSignal);
+    EXZeroingMux: mux2x1_1bit  port map (EXen,'0',LoadUseAndFlush,EXenSignal);
 
 
 
