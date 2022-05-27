@@ -530,4 +530,13 @@ begin
 				pc_src <= "00";
 		end if;
 	end process;
+	process(clk)
+		begin
+			if(pc_src = '11')
+				flush_ex = '1';
+				flush_id ='1';
+				flush_if = '1';
+				--flush_wb= '1';
+		end if;
+	end process;
 end architecture;
