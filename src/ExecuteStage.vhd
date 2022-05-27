@@ -100,12 +100,12 @@ generic (n: integer := 32);
     	out1: out std_logic_vector (n - 1 downto 0));
 END COMPONENT ;
 
-SIGNAL MUX_ALU_imm, Rsrc_chosen2 :std_logic_vector(31 downto 0);
+SIGNAL Rsrc_chosen2 :std_logic_vector(31 downto 0);
 
 SIGNAL  ALU_Rsrc2,ALU_Rsrc1: std_logic_vector(31 downto 0);--inputs of the ALU operation
 SIGNAL  output_ALU, output_INMUX : std_logic_vector(31 downto 0);-- according to op code it is either assigned to buffer (ALU_out) or to out port (OUT_PORT)
 
-SIGNAL SaveFlage_out: std_logic_vector(2 downto 0);
+SIGNAL SaveFlag_out: std_logic_vector(2 downto 0);
 SIGNAL update_Flag,CCR_in,CCR_out: std_logic_vector(2 downto 0);
 
 constant zeros : std_logic_vector (31 downto 0):= (others => '0');
@@ -120,11 +120,13 @@ BEGIN
  Rsrc1_mem_out<=Rsrc1_instruction;--to be used from buffer in the next instructions
  Rsrc2_mem_out<=Rsrc2_instruction;
 
+ OUT_PORT<=output_ALU;
+ ALU_out<=output_INMUX;
 --Multiplexer to get which second source to be used based on forwarding unit
 MUX1: mux4x1  GENERIC MAP (32) PORT MAP (Rsrc2_mem_in , Rsrc2_wb_in ,Rsrc2_instruction,zeros,isForward2,Rsrc_chosen2);
 
 --Multiplexer to choose between source and immediate value based on a control signal
-MUX2: mux2x1  GENERIC MAP (32) PORT MAP (MUX_ALU_imm ,Rsrc_chosen2,ALU_src,ALU_Rsrc2);
+MUX2: mux2x1  GENERIC MAP (32) PORT MAP (IMM ,Rsrc_chosen2,ALU_src,ALU_Rsrc2);
 
 --Multiplexer to get which first source to be used based on forwarding unit
 MUX3: mux4x1  GENERIC MAP (32) PORT MAP (Rsrc1_mem_in , Rsrc1_wb_in ,Rsrc1_instruction,zeros,isForward1,ALU_Rsrc1);
@@ -136,14 +138,14 @@ ALUOP: ALU PORT MAP (ALU_Rsrc1,ALU_Rsrc2,ALU_op, output_ALU,update_Flag);
 MUX4: mux2x1  GENERIC MAP (32) PORT MAP (output_ALU,IN_PORT ,in_select,output_INMUX);
 
 --7aga liha 3elaka bel load ->check ma3 khadija
-MUX5: mux2x1  GENERIC MAP (32) PORT MAP (Rd_in,Rs_in,ALU_op(3),Rd_Rs_Out);
+MUX5: mux2x1  GENERIC MAP (3) PORT MAP (Rd_in,Rs_in,ALU_op(3),Rd_Rs_Out);
 
 --Multiplexer to choose the input of the CCR
-MUX6: mux2x1  GENERIC MAP (3) PORT MAP (update_Flag,SaveFlage_out,restore_flags,CCR_in);
+MUX6: mux2x1  GENERIC MAP (3) PORT MAP (update_Flag,SaveFlag_out,restore_flags,CCR_in);
 
 --CCR and Save flags units to restore flags after interrupts
 CCR1: CCR  PORT MAP (clk,CCR_write_en,CCR_in,CCR_out);
-CCR2: SaveFlags PORT MAP (CCR_out,SaveFlage_out,INT_en,clk);
+CCR2: SaveFlags PORT MAP (CCR_out,SaveFlag_out,INT_en,clk);
 
 --Multiplexers for flushing
 MUX7: mux2x1  GENERIC MAP (1) PORT MAP (WB_en_in,"0",flush_ex,WB_en_out);

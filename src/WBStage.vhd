@@ -4,7 +4,7 @@ use ieee.std_logic_1164.all;
 ENTITY WBStage IS 
 PORT(
 
- Write_address_in :in std_logic_vector(2 downto 0); --destination adress for the register file comming from buffer
+ Write_address_in :in std_logic_vector(2 downto 0); --destination adress for the register file comming from buffer (Rd aw Rs)
  Write_address_out :out std_logic_vector(2 downto 0);  --destination adress going to reg file
 
  Execute_out: in std_logic_vector(31 downto 0); --value comming from execute stage(ALU)
@@ -60,5 +60,5 @@ forward_out<=forward_in;
 Rsrc1_wb_out<=Rsrc1_wb_in;
 Rsrc2_wb_out<=Rsrc2_wb_in;
 wb_enable_out<=wb_enable_in;
-
+Write_address_out<=Write_address_in;
 END ARCHITECTURE;
