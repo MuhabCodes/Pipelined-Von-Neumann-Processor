@@ -3,7 +3,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity fetch_stage is
-    port(
+port(
         clk: in std_logic;
 
         --control signals
@@ -12,16 +12,16 @@ entity fetch_stage is
         stack_en: in std_logic;
         fetch_memory: in std_logic;
         int_en: in std_logic;
-        RESET_IN: in std_logic;
-        INTR_IN: in std_logic;
+        reset_in: in std_logic;
+        intr_in: in std_logic;
         return_en: in std_logic;
         pc_write: in std_logic;
 
         --other values
         PC_buffer: in std_logic_vector(31 downto 0);
         sp: in std_logic_vector(31 downto 0);
-        index: in std_logic_vector(1 downto 0);
-        MEM_EX_Output: in std_logic_vector(31 downto 0);
+        index: in std_logic_vector(31 downto 0);
+        mem_ex_output: in std_logic_vector(31 downto 0);
         readDataMem: in std_logic_vector(31 downto 0);
         memory_block_output: in std_logic_vector(31 downto 0);
         EA_in: in std_logic_vector(31 downto 0);
@@ -29,7 +29,7 @@ entity fetch_stage is
         --output
         PC_out: out std_logic_vector(31 downto 0);
         address: out std_logic_vector(31 downto 0)
-    );
+);
 end entity;
 
 architecture fetchArch of fetch_stage is
@@ -47,7 +47,7 @@ architecture fetchArch of fetch_stage is
                 clk: in  std_logic ;
                 pc_write: in std_logic;
                 input: in  std_logic_vector (31 downto 0);   
-                output: out std_logic_vector (31 downTO 0)
+                output: out std_logic_vector (31 downto 0)
             );
     end component ;
 
