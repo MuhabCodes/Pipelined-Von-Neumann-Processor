@@ -34,7 +34,8 @@ entity decode_stage is
         writeData: in std_logic_vector(31 downto 0);
         writeReg: in std_logic_vector(2 downto 0);
 
-        PC: in std_logic_vector(31 downto 0);
+        PC_in: in std_logic_vector(31 downto 0);
+        Pc_out: out std_logic_vector(31 downto 0);
 
         IMM_in: in std_logic_vector(31 downto 0);
         readData1,readData2: out std_logic_vector(31 downto 0);
@@ -45,9 +46,10 @@ entity decode_stage is
         
         hazard_results: in std_logic;
 
-        signal WBenSignal:out  std_logic_vector(0 downto 0);
-        signal MEMenSignal: out std_logic_vector(0 downto 0);
-        signal ExenSignal: out std_logic_vector(0 downto 0)
+         WBenSignal:out  std_logic_vector(0 downto 0);
+         MEMenSignal: out std_logic_vector(0 downto 0);
+         ExenSignal: out std_logic_vector(0 downto 0)
+        
       
 
 
@@ -113,7 +115,7 @@ port (
 );
 end component;
 
-signal bit5INTindex: std_logic_vector(1 downto 0):='0' & Instruction(5);
+signal bit5INTindex: std_logic_vector(1 downto 0);
 --signal cURegWrite: std_logic;
 signal LoadUseAndFlush: std_logic;
 -- 
@@ -125,6 +127,7 @@ signal EXVector: std_logic_vector(0 downto 0);
 begin
     --controlUn: control_unit port map(CLK, Instruction(4 downto 0), CCR_out,ccr_wr_en, cURegWrite, alu_src, alu_op, alu_imm, mem_write, mem_read, stack_en, mem_to_reg, return_en,restore_flags, int_en, pc_src,flush_if,flush_id,flush_ex,flush_wb);
    --reg_write<=cURegWrite;
+bit5INTindex<='0' & Instruction(5);
    WBVector(0)<=WBen;
    EXVector(0)<=EXen;
    MEMVector(0)<=MEMen;
