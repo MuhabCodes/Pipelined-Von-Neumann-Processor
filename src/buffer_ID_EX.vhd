@@ -30,7 +30,10 @@ port(
 	imm_ea_extend : out std_logic_vector(31 downto 0);
 	rsrc1 : out std_logic_vector(2 downto 0);
 	rsrc2 : out std_logic_vector(2 downto 0);
-	rd : out std_logic_vector(2 downto 0)
+	rd : out std_logic_vector(2 downto 0);
+	---
+	ID_EX_MemRead:  out std_logic
+
 );
 
 end entity;
