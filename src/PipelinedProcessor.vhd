@@ -142,6 +142,8 @@ PORT(
  	Rsrc2_mem_in : in std_logic_vector(31 downto 0);
 	Rsrc1_mem_out : out std_logic_vector(31 downto 0);--going to execute stage and the MEM/WB buffer and data write 
 	Rsrc2_mem_out : out std_logic_vector(31 downto 0);--to be used in forwarding
+	mem_en_in, wb_en_in: in std_logic;
+ 	mem_en_out, wb_en_out: out std_logic;
 	execution_output: in std_logic_vector(31 downto 0); --value comming from execute stage (Rsrc2+offset)-> memory address
  	mem_stage_output: out std_logic_vector(31 downto 0);--could be store adress OR vslue to be passed to MEM/WB buffer
  	Rd_Rs_in: in std_logic_vector(2 downto 0);
@@ -231,6 +233,11 @@ SIGNAL isForward1,isForward2: std_logic_vector(1 downto 0);--output of fw unit /
 SIGNAL WB_en_mem,MEM_en_mem,WB_en_wb,MEM_en_wb : std_logic; --enable signals
 SIGNAL Rsrc1_memBuffer,Rsrc2_memBuffer, buffer_PC_out,execution_output ,Rsrc1_memStage,Rsrc2_memStage: std_logic_vector(31 downto 0);--sources passed to buffers for forwarding
 SIGNAL CCR_write_en, Rd_Rs_Out,Rs_in_memBuff,Rt_in_memBuff,Rd_in_memBuff, regAddress:std_logic_vector(2 downto 0);
+
+--memory stage signals
+SIGNAL Rsrc1_mem_out, Rsrc2_mem_out,Mem_dataWrite,mem_stage_output, StroreAdress: std_logic_vector(31 downto 0);
+SIGNAL regAddress_wb: std_logic_vector(2 downto 0);
+SIGNAL wb_signal_in, mem_sig_toforward : std_logic;
 BEGIN
 
 buffer1: buffer_ID_EX PORT MAP (clk,flush,ex_signal_in_id_ex ,mem_signal_in_id_ex,
@@ -251,5 +258,20 @@ ex: ExecuteStage PORT MAP (
  buffer2:buffer_EX_MEM PORT MAP (
 	 			clk, flush ,MEM_en_mem,WB_en_mem,ALU_out,Rd_Rs_Out,Rsrc1_memBuffer,
 				Rsrc2_memBuffer,WB_en_wb,MEM_en_wb,execution_output,regAddress,Rsrc1_memStage,Rsrc2_memStage);
+
+				
+Rsrc1_mem<=Rsrc1_mem_out;--setting the data going from memory stage to eexecute stage
+Mem_dataWrite<=Rsrc1_mem_out;--in store operations this is the value stored
+StroreAdress<=mem_stage_output;--in store operations thi is store adress
+mem1: MemoryStage PORT MAP (
+			Rsrc1_memStage,Rsrc2_memStage,	
+			Rsrc1_mem_out,--going to execute stage and the MEM/WB buffer and data write 
+			Rsrc2_mem_out,--to be used in forwarding
+			MEM_en_wb,WB_en_wb,mem_sig_toforward,wb_signal_in,--enable signals in /out
+			execution_output,
+			mem_stage_output,--could be store adress OR vslue to be passed to MEM/WB buffer
+			regAddress,
+			regAddress_wb);--going to forwarding unit and  MEM/WB buffer
+
 
 END ARCHITECTURE;
