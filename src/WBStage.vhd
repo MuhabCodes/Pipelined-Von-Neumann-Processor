@@ -4,15 +4,13 @@ use ieee.std_logic_1164.all;
 ENTITY WBStage IS 
 PORT(
 
- Write_address_in :in std_logic_vector(2 downto 0); --destination adress for the register file
- Write_address_out :out std_logic_vector(2 downto 0); 
+ Write_address_in :in std_logic_vector(2 downto 0); --destination adress for the register file comming from buffer
+ Write_address_out :out std_logic_vector(2 downto 0);  --destination adress going to reg file
 
  Execute_out: in std_logic_vector(31 downto 0); --value comming from execute stage(ALU)
  Load_value: in std_logic_vector(31 downto 0); --value comming from memory
  mem_to_reg: in std_logic; --control signal to choose between both
   
- Write_back_out :out std_logic_vector(31 downto 0); --value to write in the register file at the destination adress
-
  forward_in :in std_logic_vector(2 downto 0);--destination wrue back for previous instruction-> for forwarding unit
  forward_out :out std_logic_vector(2 downto 0);--going to the forwarding unit
  
@@ -24,7 +22,10 @@ PORT(
  Rsrc2_wb_out : out std_logic_vector(31 downto 0);
 
  wb_enable_in :in std_logic;--comming from MEM/WB buffer
- wb_enable_out:out std_logic --going to forwarding unit
+ wb_enable_out:out std_logic; --going to forwarding unit
+
+ Write_back_out :out std_logic_vector(31 downto 0) --value to write in the register file at the destination adress
+
 );
 END ENTITY;
 
