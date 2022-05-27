@@ -5,9 +5,11 @@ use ieee.std_logic_1164.all;
 
 ENTITY PipelinedProcessor IS 
 PORT(
-	clk:in std_logic;
+	clk : in std_logic;
+	INTR_IN : in std_logic;
+	RESET_IN : in std_logic;
 	IN_PORT : in std_logic_vector(31 downto 0);
-	OUT_PORT:out std_logic_vector(31 downto 0)
+	OUT_PORT : out std_logic_vector(31 downto 0)
 );
 END ENTITY;
 
@@ -30,7 +32,7 @@ PORT(
 	restore_flags : out std_logic;
 	int_en : out std_logic;
 	pc_src : out std_logic_vector(1 downto 0);
-        flush_if : out std_logic;
+	flush_if : out std_logic;
 	flush_id : out std_logic;
 	flush_ex : out std_logic;
 	flush_wb : out std_logic);
