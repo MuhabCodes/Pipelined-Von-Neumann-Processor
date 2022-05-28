@@ -12,6 +12,7 @@ port (
 	alu_src : out std_logic;
 	alu_op : out std_logic_vector(4 downto 0);
 	in_select : out std_logic;
+	fetch_memory : out std_logic;
 	mem_write : out std_logic;
 	mem_read : out std_logic;
 	stack_en : out std_logic;
@@ -57,6 +58,7 @@ begin
 				alu_src <= '0';
 				alu_op <= "00000";
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -74,6 +76,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -91,6 +94,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -108,6 +112,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -125,6 +130,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '1';
 				stack_en <= '1';
@@ -142,6 +148,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '1';
 				stack_en <= '1';
@@ -159,6 +166,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '1';
 				mem_write <= '1';
 				mem_read <= '0';
 				stack_en <= '1';
@@ -176,6 +184,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '1';
 				mem_write <= '0';
 				mem_read <= '1';
 				stack_en <= '1';
@@ -193,6 +202,7 @@ begin
 				alu_src <= '1';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -210,6 +220,7 @@ begin
 				alu_src <= '1';
 				alu_op <= opcode;
 				in_select <= '1';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -227,6 +238,7 @@ begin
 				alu_src <= '1';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '1';
 				mem_read <= '1';
 				stack_en <= '1';
@@ -244,6 +256,7 @@ begin
 				alu_src <= '1';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '1';
 				mem_read <= '1';
 				stack_en <= '1';
@@ -254,7 +267,6 @@ begin
 				restore_flags <= '0';
 				int_en <= '1';
 				pc_src <= '0';
-			end if;
 			-- INC
 			elsif (opcode = "01110") then
 				ccr_wr_en <= "111";
@@ -262,6 +274,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -279,6 +292,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -296,6 +310,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -313,6 +328,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -330,6 +346,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -347,6 +364,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -364,6 +382,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -381,6 +400,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -405,6 +425,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -429,6 +450,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -453,6 +475,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -477,6 +500,7 @@ begin
 				alu_src <= '1';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -494,6 +518,7 @@ begin
 				alu_src <= '1';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -511,6 +536,7 @@ begin
 				alu_src <= '1';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '1';
 				mem_write <= '0';
 				mem_read <= '1';
 				stack_en <= '0';
@@ -528,6 +554,7 @@ begin
 				alu_src <= '1';
 				alu_op <= opcode;
 				in_select <= '0';
+				fetch_memory <= '1';
 				mem_write <= '1';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -538,6 +565,7 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+			end if;
 		end if;
 	end process;
 end architecture;
