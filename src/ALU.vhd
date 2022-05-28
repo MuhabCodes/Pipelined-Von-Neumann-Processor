@@ -27,9 +27,9 @@ PORT(   a,b: in std_logic_vector(31 downto 0);
 	cout: out std_logic);
 END COMPONENT ;
 
-SIGNAL INC_out , NOT_out, MOV_out,ADD_out, SUB_out, AND_out, ADDI_out:std_logic_vector(31 downto 0);
-SIGNAL INC_cout, Z_not, N_not, Z_inc, N_inc, Z_add, N_add ,Z_sub, N_sub ,Z_and, N_and :std_logic;
-SIGNAL C_add,C_sub:std_logic;
+SIGNAL INC_out, NOT_out, MOV_out,ADD_out, SUB_out, AND_out, ADDI_out:std_logic_vector(31 downto 0) := (others=>'0');
+SIGNAL INC_cout, Z_not, N_not, Z_inc, N_inc, Z_add, N_add ,Z_sub, N_sub ,Z_and, N_and :std_logic := '0';
+SIGNAL C_add,C_sub:std_logic  := '0';
 
 
 --constants to be used in comparisons
@@ -61,7 +61,7 @@ MOV_out<=R1;
 
 --ADD	10010  and IADD	11100-> both are the same as operands are chosen outside the alu
 u1: adder GENERIC MAP (32) PORT MAP ('0',R1,R2,ADD_out, C_add);
-Z_add <= '1' WHEN ADD_out= zeros
+Z_add <= '1' WHEN ADD_out = zeros
              ELSE '0';
 N_add <= '1' WHEN ADD_out(31)='1'
              ELSE '0';
@@ -90,9 +90,9 @@ Rout<= INC_out WHEN ALU_op= "01110"
   ELSE SUB_out WHEN ALU_op= "10011";
 
 UpdateFlag <= '0' & N_inc & Z_inc WHEN ALU_op= "01110"
-         ELSE '0' & N_not & Z_not WHEN ALU_op= "01111"
- 	 ELSE '0' & N_and & Z_and WHEN ALU_op= "10100"
-         ELSE C_add & N_add & Z_add WHEN ALU_op= "10010" OR ALU_op= "11100"
-	 ELSE C_sub & N_sub & Z_sub WHEN ALU_op= "10011"
-	 ELSE "000";
+        ELSE '0' & N_not & Z_not WHEN ALU_op= "01111"
+        ELSE '0' & N_and & Z_and WHEN ALU_op= "10100"
+        ELSE C_add & N_add & Z_add WHEN ALU_op= "10010" OR ALU_op= "11100"
+	      ELSE C_sub & N_sub & Z_sub WHEN ALU_op= "10011"
+	      ELSE "000";
 END ARCHITECTURE;

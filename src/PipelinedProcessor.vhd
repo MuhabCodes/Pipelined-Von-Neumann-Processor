@@ -2,7 +2,6 @@
 Library ieee;
 use ieee.std_logic_1164.all;
 
-
 ENTITY PipelinedProcessor IS 
 PORT(
 	clk : in std_logic;
@@ -37,34 +36,34 @@ PORT(
 	flush_id : out std_logic;
 	flush_ex : out std_logic;
 	flush_wb : out std_logic
-	);
+);
 END COMPONENT ;
 
 component fetch_stage is
 port(
-        clk: in std_logic;
+	clk: in std_logic;
 
-        --control signals
-        pc_src: in std_logic;
-        RESET_OR_INTR: in std_logic;
-        fetch_memory: in std_logic;
-        int_en: in std_logic;
-        reset_in: in std_logic;
-        intr_in: in std_logic;
-        return_en: in std_logic;
-        pc_write: in std_logic;
-        mem_write: in std_logic;
+	--control signals
+	pc_src: in std_logic;
+	RESET_OR_INTR: in std_logic;
+	fetch_memory: in std_logic;
+	int_en: in std_logic;
+	reset_in: in std_logic;
+	intr_in: in std_logic;
+	return_en: in std_logic;
+	pc_write: in std_logic;
+	mem_write: in std_logic;
 
-        --other values
-        PC_buffer: in std_logic_vector(31 downto 0);
-        index: in std_logic_vector(31 downto 0);
-        mem_ex_output: in std_logic_vector(31 downto 0);
-        memory_block_output: in std_logic_vector(31 downto 0);
-        EA_in: in std_logic_vector(31 downto 0);
+	--other values
+	PC_buffer: in std_logic_vector(31 downto 0);
+	index: in std_logic_vector(31 downto 0);
+	mem_ex_output: in std_logic_vector(31 downto 0);
+	memory_block_output: in std_logic_vector(31 downto 0);
+	EA_in: in std_logic_vector(31 downto 0);
 
-        --output
-        pc_out: out std_logic_vector(31 downto 0);
-        address: out std_logic_vector(31 downto 0)
+	--output
+	pc_out: out std_logic_vector(31 downto 0);
+	address: out std_logic_vector(31 downto 0)
 );
 end component;
 
@@ -144,44 +143,54 @@ END COMPONENT ;
 
 COMPONENT ExecuteStage IS 
 PORT(
- 	clk: in std_logic;
- 	IMM : in std_logic_vector(31 downto 0); --immendiate value after sign extend(from buffer)
- 	IN_PORT : in std_logic_vector(31 downto 0); --value comming from input port
- 	in_select: in std_logic ;--control signal to choose betweet in port and ALU output to be in the buffer
+	clk: in std_logic;
+	IMM : in std_logic_vector(31 downto 0); --immendiate value after sign extend(from buffer)
+	IN_PORT : in std_logic_vector(31 downto 0); --value comming from input port
+	in_select: in std_logic ;--control signal to choose betweet in port and ALU output to be in the buffer
 
- 	Rsrc2_mem_in : in std_logic_vector(31 downto 0);
- 	Rsrc2_wb_in : in std_logic_vector(31 downto 0);
- 	Rsrc2_instruction : in std_logic_vector(31 downto 0);
- 	isForward2 : in std_logic_vector(1 downto 0); --output of forwarding unit to chhose which source2 regitser value to use
- 	Rsrc1_mem_in : in std_logic_vector(31 downto 0);
- 	Rsrc1_wb_in : in std_logic_vector(31 downto 0);
- 	Rsrc1_instruction : in std_logic_vector(31 downto 0);
- 	isForward1 : in std_logic_vector(1 downto 0); --output of forwarding unit to chhose which source1 regitser value to use
+	Rsrc2_mem_in : in std_logic_vector(31 downto 0);
+	Rsrc2_wb_in : in std_logic_vector(31 downto 0);
+	Rsrc2_instruction : in std_logic_vector(31 downto 0);
+	isForward2 : in std_logic_vector(1 downto 0); --output of forwarding unit to chhose which source2 regitser value to use
+	
+	Rsrc1_mem_in : in std_logic_vector(31 downto 0);
+	Rsrc1_wb_in : in std_logic_vector(31 downto 0);
+	Rsrc1_instruction : in std_logic_vector(31 downto 0);
+	isForward1 : in std_logic_vector(1 downto 0); --output of forwarding unit to chhose which source1 regitser value to use
 
- 	ALU_src: in std_logic;  --control signal to choose the second source in ALU op
- 	ALU_op: in std_logic_vector (4 downto 0); --control signal to choose ALU operation
- 	Rd_in: in std_logic_vector(2 downto 0);
- 	Rs_in: in std_logic_vector(2 downto 0);
- 	Rt_in: in std_logic_vector(2 downto 0);
- 	buffer_PC_in:in std_logic_vector(31 downto 0);
- 	restore_flags:  in std_logic; --control signal to choose ccr input
- 	CCR_write_en:  in std_logic_vector(2 downto 0);
- 	INT_en: in std_logic; --interrupt enable control signal
- 	WB_en_in: in std_logic;
- 	MEM_en_in:in std_logic;
- 	WB_en_out:out std_logic;
- 	MEM_en_out:out std_logic;
- 	ALU_out: out std_logic_vector(31 downto 0); --output of the ALU operation goes to buffer
- 	OUT_PORT:out std_logic_vector(31 downto 0);
- 	Rsrc1_mem_out : out std_logic_vector(31 downto 0);--putting the sources in the ex/mem buffer so we can use them in forwarding
- 	Rsrc2_mem_out: out std_logic_vector(31 downto 0);
- 	Rd_Rs_Out: out std_logic_vector(2 downto 0);
- 	Rs_out: out std_logic_vector(2 downto 0);--going to forwarding unit
- 	Rt_out: out std_logic_vector(2 downto 0);--going to forwarding unit
- 	Rd_out: out std_logic_vector(2 downto 0);--going to hazard detection unit
+	ALU_src: in std_logic;  --control signal to choose the second source in ALU op
+	ALU_op: in std_logic_vector (4 downto 0); --control signal to choose ALU operation
 
- 	buffer_PC_out:out std_logic_vector(31 downto 0);
-	CCR_out: out std_logic_vector(2 downto 0));
+	Rd_in: in std_logic_vector(2 downto 0);
+	Rs_in: in std_logic_vector(2 downto 0);
+	Rt_in: in std_logic_vector(2 downto 0);
+	
+	buffer_PC_in:in std_logic_vector(31 downto 0);
+
+	restore_flags:  in std_logic; --control signal to choose ccr input
+	CCR_write_en:  in std_logic_vector(2 downto 0);
+	INT_en: in std_logic; --interrupt enable control signal
+	
+	WB_en_in: in std_logic;
+	MEM_en_in:in std_logic;
+
+	WB_en_out:out std_logic;
+	MEM_en_out:out std_logic;
+	
+	ALU_out: out std_logic_vector(31 downto 0); --output of the ALU operation goes to buffer
+	OUT_PORT:out std_logic_vector(31 downto 0);
+
+	Rsrc1_mem_out : out std_logic_vector(31 downto 0);--putting the sources in the ex/mem buffer so we can use them in forwarding
+	Rsrc2_mem_out: out std_logic_vector(31 downto 0);
+
+	Rd_Rs_Out: out std_logic_vector(2 downto 0);
+	Rs_out: out std_logic_vector(2 downto 0);--going to forwarding unit
+	Rt_out: out std_logic_vector(2 downto 0);--going to forwarding unit
+	Rd_out: out std_logic_vector(2 downto 0);--going to hazard detection unit
+
+	buffer_PC_out:out std_logic_vector(31 downto 0);
+	CCR_output: out std_logic_vector(2 downto 0)
+);
 END COMPONENT ;
 
 COMPONENT buffer_EX_MEM is 

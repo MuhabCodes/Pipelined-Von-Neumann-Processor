@@ -1,24 +1,24 @@
-library ieee;
-use ieee.std_logic_1164.all;
-use ieee.std_logic_unsigned.all;
-
-entity adder is
-generic (n: integer := 16);
-port(
-	cin: in std_logic;
-	a,b: in std_logic_vector(n-1 downto 0);
-	sum: out std_logic_vector(n-1 downto 0);
-	cout: out std_logic
+LIBRARY IEEE;
+USE IEEE.std_logic_1164.all;
+ENTITY adder IS
+GENERIC (n : integer := 32);
+PORT   (
+	cin : IN std_logic;
+	a, b : IN std_logic_vector(n-1 DOWNTO 0) ;
+	sum : OUT std_logic_vector(n-1 DOWNTO 0);
+	cout : OUT std_logic
 );
-end entity;
+END adder;
 
-architecture struct of adder is
-signal temp_A, temp_B: std_logic_vector(n downto 0);
-signal temp: std_logic_vector(n downto 0);
-begin
-	temp_A <= '0' & A;
-	temp_B <= '0' & B;
-	temp <= temp_A + temp_B;
-	sum <= temp(n-1 downto 0);
-	cout <= temp(n);
-end architecture;
+ARCHITECTURE struct OF adder IS
+COMPONENT my_adder IS
+	PORT( a,b,cin : IN std_logic; s,cout : OUT std_logic);
+END COMPONENT;
+SIGNAL temp : std_logic_vector(n DOWNTO 0);
+BEGIN
+temp(0) <= cin;
+loop1: FOR i IN 0 TO n-1 GENERATE
+        fx: my_adder PORT MAP(a(i),b(i),temp(i),sum(i),temp(i+1));
+END GENERATE;
+Cout <= temp(n);
+end Architecture;
