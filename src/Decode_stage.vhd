@@ -26,9 +26,7 @@ entity decode_stage is
         readData1,readData2: out std_logic_vector(31 downto 0);
         Rd, Rs,Rt: out std_logic_vector(2 downto 0);
         index: out std_logic_vector(1 downto 0);
-        WBenSignal:out  std_logic;
-        MEMenSignal: out std_logic;
-        ExenSignal: out std_logic;
+        LoadUseAndFlush: out std_logic;
         IMM_out: out std_logic_vector(15 downto 0)
     );
 end entity;
@@ -65,7 +63,6 @@ port (
 end component;
 
 signal bit5INTindex: std_logic_vector(1 downto 0);
-signal LoadUseAndFlush: std_logic;
 
 begin
    
@@ -78,8 +75,5 @@ begin
     IMM_out<= instruction(15 downto 0);
     addingPc: adder generic map (2) port map ('0', "10", bit5INTindex, index, open);
     LoadUseAndFlush<=flush_id or hazard_Results;
-    WBZeroingMux: mux2x1_1bit port map (WBen, '0', LoadUseAndFlush, WBenSignal);
-    MEMZeroingMux: mux2x1_1bit  port map (MEMen, '0', LoadUseAndFlush, MEMenSignal);
-    EXZeroingMux: mux2x1_1bit  port map (EXen, '0', LoadUseAndFlush, EXenSignal);
 
 end architecture rtl;
