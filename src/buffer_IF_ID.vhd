@@ -7,10 +7,10 @@ port(
 	flush : in std_logic;
 	write_en : in std_logic;
 	--- opcode_in : in std_logic_vector(29 downto 0);
-	opcode_in : in std_logic_vector(31 downto 0);
+	instruction_in : in std_logic_vector(31 downto 0);
 	pc_in : in std_logic_vector(31 downto 0);
 	--- opcode : out std_logic_vector(29 downto 0);
-	opcode : out std_logic_vector(31 downto 0);
+	instruction : out std_logic_vector(31 downto 0);
 	pc : out std_logic_vector(31 downto 0)
 );
 
@@ -21,10 +21,10 @@ begin
 	process(flush, write_en, clk)
 	begin
 		if (flush = '1') then
-			opcode <= (others => '0');
+			instruction <= (others => '0');
 			pc <= (others => '0');
 		elsif (rising_edge(clk) and write_en = '1') then
-			opcode <= opcode_in;
+			instruction <= instruction_in;
 			pc <= pc_in;
 		end if;
 	end process;

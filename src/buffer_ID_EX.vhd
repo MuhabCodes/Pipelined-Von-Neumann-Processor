@@ -32,7 +32,7 @@ port(
 	rsrc2 : out std_logic_vector(2 downto 0);
 	rd : out std_logic_vector(2 downto 0);
 	---
-	ID_EX_MemRead:  out std_logic
+	ID_EX_MemRead: out std_logic
 
 );
 
