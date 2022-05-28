@@ -18,11 +18,9 @@ entity decode_stage is
         --other inputs
         writeData: in std_logic_vector(31 downto 0);--data read from memory
         writeReg: in std_logic_vector(2 downto 0);--destination register
-        PC_in: in std_logic_vector(31 downto 0);
        -- IMM_in: in std_logic_vector(15 downto 0);
 
         --outputs
-        Pc_out: out std_logic_vector(31 downto 0);
         readData1,readData2: out std_logic_vector(31 downto 0);
         Rd, Rs,Rt: out std_logic_vector(2 downto 0);
         index: out std_logic_vector(1 downto 0);
@@ -71,7 +69,6 @@ begin
     Rs<=Instruction(23 downto 21);
     Rt<=Instruction(20 downto 18);
     Rd<=Instruction(26 downto 24);
-    pc_out<=pc_in;
     IMM_out<= instruction(15 downto 0);
     addingPc: adder generic map (2) port map ('0', "10", bit5INTindex, index, open);
     LoadUseAndFlush<=flush_id or hazard_Results;
