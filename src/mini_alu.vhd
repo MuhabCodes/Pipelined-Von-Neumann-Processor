@@ -36,18 +36,6 @@ neg_one <= (others=> '1');
 whichAdd<= one when (stack_en ='1' and mem_write ='0')
 else neg_one when (stack_en ='1' and mem_write ='1')
 else (others=>'0');
--- process(clk)
--- begin
---     if(rising_edge(clk)) then
---         if(stack_en = '1') then
---             if(mem_write = '0') then
---                 whichAdd<=one;
---             elsif(mem_write = '1') then
---                 whichAdd<=neg_one;
---             end if;
---         end if;
---     end if;
--- end process;
 
 add_map: adder generic map (32) port map ('0', sp_in, whichAdd, sp_out, open);
 end architecture mini_alu_arch;
