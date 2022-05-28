@@ -11,7 +11,7 @@ port (
 	reg_write : out std_logic;
 	alu_src : out std_logic;
 	alu_op : out std_logic_vector(4 downto 0);
-	alu_imm : out std_logic;
+	in_select : out std_logic;
 	mem_write : out std_logic;
 	mem_read : out std_logic;
 	stack_en : out std_logic;
@@ -24,7 +24,6 @@ port (
 	flush_id : out std_logic;
 	flush_ex : out std_logic;
 	flush_wb : out std_logic
-	
 );
 end entity;
 
@@ -57,7 +56,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '0';
 				alu_op <= "00000";
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -74,7 +73,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -91,7 +90,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -108,7 +107,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -125,7 +124,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '1';
 				stack_en <= '1';
@@ -142,7 +141,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '1';
 				stack_en <= '1';
@@ -159,7 +158,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '1';
 				mem_read <= '0';
 				stack_en <= '1';
@@ -176,7 +175,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '1';
 				stack_en <= '1';
@@ -193,7 +192,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '1';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -210,7 +209,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '1';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '1';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -227,7 +226,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '1';
 				alu_op <= opcode;
-				alu_imm <= '1';
+				in_select <= '0';
 				mem_write <= '1';
 				mem_read <= '1';
 				stack_en <= '1';
@@ -244,7 +243,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '1';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '1';
 				mem_read <= '1';
 				stack_en <= '1';
@@ -262,7 +261,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -279,7 +278,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -296,7 +295,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -313,7 +312,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -330,7 +329,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -347,7 +346,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -364,7 +363,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '0';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -381,7 +380,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '1';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -405,7 +404,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '1';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -429,7 +428,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '1';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -453,7 +452,7 @@ begin
 				reg_write <= '0';
 				alu_src <= '0';
 				alu_op <= opcode;
-				alu_imm <= '1';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -477,7 +476,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '1';
 				alu_op <= opcode;
-				alu_imm <= '1';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -494,7 +493,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '1';
 				alu_op <= opcode;
-				alu_imm <= '1';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
@@ -511,7 +510,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '1';
 				alu_op <= opcode;
-				alu_imm <= '1';
+				in_select <= '0';
 				mem_write <= '0';
 				mem_read <= '1';
 				stack_en <= '0';
@@ -528,7 +527,7 @@ begin
 				reg_write <= '1';
 				alu_src <= '1';
 				alu_op <= opcode;
-				alu_imm <= '1';
+				in_select <= '0';
 				mem_write <= '1';
 				mem_read <= '0';
 				stack_en <= '0';
