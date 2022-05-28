@@ -9,7 +9,6 @@ port(
         --control signals
         pc_src: in std_logic;
         control_signal: in std_logic;
-        stack_en: in std_logic;
         fetch_memory: in std_logic;
         int_en: in std_logic;
         reset_in: in std_logic;
@@ -60,13 +59,13 @@ architecture fetchArch of fetch_stage is
             sum: out std_logic_vector(n-1 downto 0);
             cout: out std_logic
         );
-end component;
+
+    end component;
 
 signal pc_src_mux: std_logic_vector(31 downto 0);
 --signal control_signal_mux: std_logic_vector(31 downto 0);
 signal one: std_logic_vector(31 downto 0);
 signal zero: std_logic_vector(31 downto 0);
-signal stack_en_mux: std_logic_vector(31 downto 0);
 signal fetch_mem_mux: std_logic_vector(31 downto 0);
 signal int_en_mux: std_logic_vector(31 downto 0);
 signal RESET_IN_mux: std_logic_vector(31 downto 0);
@@ -83,8 +82,7 @@ begin
     returnenMux: mux2x1 generic map (32) port map (PC_plus_one, PC_buffer, return_en, return_en_mux);
     pcSrcMux:  mux2x1 generic map (32) port map (return_en_mux, EA_in, pc_src, pc_src_mux);
     controlmux:  mux2x1 generic map (32) port map (pc_src_mux, memory_block_output, control_signal, pc_input);
-    stackenmux:  mux2x1 generic map (32) port map (sp, MEM_EX_Output, stack_en, stack_en_mux);
-    fetchmem:  mux2x1 generic map (32) port map (pc_out_signal, stack_en_mux, fetch_memory, fetch_mem_mux);
+    fetchmem:  mux2x1 generic map (32) port map (pc_out_signal, MEM_EX_output, fetch_memory, fetch_mem_mux);
     intenmux:  mux2x1 generic map (32) port map (fetch_mem_mux, index, int_en, int_en_mux);
     resetINmux:  mux2x1 generic map (32) port map (int_en_mux, zero, RESET_IN, RESET_IN_mux);
     INTRINmux:  mux2x1 generic map (32) port map (RESET_IN_mux, one, INTR_IN, address);
