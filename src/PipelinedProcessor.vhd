@@ -38,6 +38,19 @@ PORT(
 	flush_wb : out std_logic);
 END COMPONENT ;
 
+
+COMPONENT buffer_IF_ID is 
+port(
+	clk : in std_logic;
+	flush : in std_logic;--control signal
+	write_en : in std_logic;--control signal
+	opcode_in : in std_logic_vector(31 downto 0); --  instruction in from fetch decode
+	pc_in : in std_logic_vector(31 downto 0); -- pc in from fetch stage
+	opcode : out std_logic_vector(31 downto 0); --instruction to decode stage
+	pc : out std_logic_vector(31 downto 0)--PC to decode stage
+);
+END COMPONENT;
+
 COMPONENT decode_stage is
     port(
         CLK,rst:in std_logic;
@@ -247,7 +260,7 @@ END COMPONENT ;
 
 --Decode stage signals
 SIGNAL reg_write, flush_id, WBen, MEMen, EXen, hazard_Results: std_logic; --control signals in
-SIGNAL Instruction, write_data, PC_in_Dstage, IMM_in_Dstage: std_logic_vector(31 downto 0); --input addresses/instruction
+SIGNAL Instruction, write_data, PC_in_Dstage: std_logic_vector(31 downto 0); --input addresses/instruction from buffer
 SIGNAL write_reg: std_logic_vector(2 downto 0);--desitnation register address
 --SIGNAL pc_out_Dstage, readData1, readData2, IMM_out_Dstage: std_logic_vector(31 downto 0); -- 32 bit outputs
 SIGNAL Rd_Dstage, Rs_Dstage, Rt_Dstage: std_logic_vector(2 downto 0);--output registers
