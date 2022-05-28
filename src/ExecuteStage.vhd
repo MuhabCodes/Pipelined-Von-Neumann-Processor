@@ -16,7 +16,6 @@ PORT(
  Rsrc2_instruction : in std_logic_vector(31 downto 0);
  isForward2 : in std_logic_vector(1 downto 0); --output of forwarding unit to chhose which source2 regitser value to use
  
-
  Rsrc1_mem_in : in std_logic_vector(31 downto 0);
  Rsrc1_wb_in : in std_logic_vector(31 downto 0);
  Rsrc1_instruction : in std_logic_vector(31 downto 0);
@@ -109,13 +108,13 @@ port (
 );
 END COMPONENT ;
 
-SIGNAL Rsrc_chosen2 :std_logic_vector(31 downto 0);
+SIGNAL Rsrc_chosen2 :std_logic_vector(31 downto 0) := (others=>'0');
 
-SIGNAL  ALU_Rsrc2,ALU_Rsrc1: std_logic_vector(31 downto 0);--inputs of the ALU operation
-SIGNAL  output_ALU, output_INMUX : std_logic_vector(31 downto 0);-- according to op code it is either assigned to buffer (ALU_out) or to out port (OUT_PORT)
+SIGNAL  ALU_Rsrc2,ALU_Rsrc1: std_logic_vector(31 downto 0) := (others => '0');--inputs of the ALU operation
+SIGNAL  output_ALU, output_INMUX : std_logic_vector(31 downto 0) := (others => '0');-- according to op code it is either assigned to buffer (ALU_out) or to out port (OUT_PORT)
 
-SIGNAL SaveFlag_out: std_logic_vector(2 downto 0);
-SIGNAL update_Flag,CCR_in,CCR_out: std_logic_vector(2 downto 0);
+SIGNAL SaveFlag_out: std_logic_vector(2 downto 0) := (others => '0');
+SIGNAL update_Flag,CCR_in,CCR_out: std_logic_vector(2 downto 0) := (others => '0');
 
 constant zeros : std_logic_vector (31 downto 0):= (others => '0');
 
