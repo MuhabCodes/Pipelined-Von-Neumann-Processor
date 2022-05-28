@@ -52,7 +52,8 @@ PORT(
  Rt_out: out std_logic_vector(2 downto 0);--going to forwarding unit
  Rd_out: out std_logic_vector(2 downto 0);--going to hazard detection unit
 
- buffer_PC_out:out std_logic_vector(31 downto 0)
+ buffer_PC_out:out std_logic_vector(31 downto 0);
+ CCR_output: out std_logic_vector(2 downto 0)
 );
 END ENTITY;
 
@@ -87,7 +88,7 @@ COMPONENT mux4x1 is
 GENERIC (n: integer := 32);
     PORT(
     	in1, in2, in3, in4 : in std_logic_vector (n - 1 downto 0);
-   	sel : in std_logic_vector(1 downto 0);
+		sel : in std_logic_vector(1 downto 0);
     	out1 : out std_logic_vector (n - 1 downto 0));
 END COMPONENT ;
 
@@ -157,6 +158,7 @@ CCR2: SaveFlags PORT MAP (CCR_out,SaveFlag_out,INT_en,clk);
 
 WB_en_out<=WB_en_in;
 MEM_en_out<=MEM_en_in;
+CCR_output <= CCR_out;
 
 
 END ARCHITECTURE;
