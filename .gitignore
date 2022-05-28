@@ -5,3 +5,4 @@
 /src/*.wlf
 /src/work/**
 /src/transcript
+/src/[A-Za-z]*
