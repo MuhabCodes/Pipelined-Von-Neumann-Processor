@@ -103,9 +103,7 @@ COMPONENT decode_stage is
         readData1,readData2: out std_logic_vector(31 downto 0);
         Rd, Rs,Rt: out std_logic_vector(2 downto 0);
         index: out std_logic_vector(1 downto 0);
-        WBenSignal:out  std_logic;
-        MEMenSignal: out std_logic;
-        ExenSignal: out std_logic;
+        LoadUseAndFlush: out std_logic;
         IMM_out: out std_logic_vector(15 downto 0)
     );
 END COMPONENT;
