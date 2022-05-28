@@ -299,6 +299,9 @@ SIGNAL mem_to_reg: std_logic;
 BEGIN
 
 
+-- '.' means still not mapped, mainly control signals
+bufferFD: buffer_IF_ID PORT MAP(clk,'.','.','.','.',instruction,PC_in_Dstage);
+
 Dstage: Decode_stage PORT MAP (clk, '0', instruction, reg_write, flush, WBen, MEMen,
 				EXen, hazard_Results, write_data,write_reg,PC_in_Dstage,
 				pc_in, reg1_in_ex,reg2_in_ex,Rd_in_exBuff,Rs_in_exBuff,Rt_in_exBuff, 
