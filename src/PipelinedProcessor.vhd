@@ -277,9 +277,12 @@ SIGNAL CCR_write_en, Rd_Rs_Out,Rs_in_memBuff,Rt_in_memBuff,Rd_in_memBuff, regAdd
 --memory stage signals
 SIGNAL Rsrc1_mem_out, Rsrc2_mem_out,Mem_dataWrite,mem_stage_output, StroreAdress: std_logic_vector(31 downto 0);
 SIGNAL regAddress_wb,Write_address_in: std_logic_vector(2 downto 0);
-SIGNAL wb_signal_in, mem_sig_toforward,wb_sig_toforward : std_logic;
+SIGNAL wb_signal_in, mem_sig_toforward,wb_sig_toforward ,wb_signal_out: std_logic;
 
 SIGNAL Execute_out, Load_value: std_logic_vector(31 downto 0);
+--wb stage signals
+SIGNAL WB_adress_to_forward:std_logic_vector(2 downto 0);
+SIGNAL mem_to_reg: std_logic;
 BEGIN
 
 
@@ -328,8 +331,24 @@ buffer3: buffer_MEM_WB  PORT MAP (
 			clk ,flush ,wb_signal_in,mem_stage_output,execution_output,regAddress_wb,
 			Rsrc1_mem_out,--going to execute stage and the MEM/WB buffer and data write 
 			Rsrc2_mem_out,--to be used in forwarding
-			wb_sig_toforward,Load_value,Execute_out,
+			wb_signal_out,Load_value,Execute_out,
 			Write_address_in,--destination adress for the register file comming from buffer (Rd aw Rs) to wb stage
 			Rsrc1_wb,Rsrc2_wb);
-			
+
+wb: WBStage PORT MAP (
+			Write_address_in, --destination adress for the register file comming from buffer (Rd aw Rs)
+			write_reg, --destination adress going to reg file
+			Execute_out,--value comming from execute stage(ALU)
+			Load_value, --value comming from memory
+			mem_to_reg,
+			Write_address_in,--destination wrue back for previous instruction-> for forwarding unit
+			WB_adress_to_forward,--going to the forwarding unit
+			Rsrc1_wb,Rsrc2_wb,
+			Rsrc1_wb,Rsrc2_wb,--going to execute stage
+			wb_signal_out,--comming from MEM/WB buffer
+			wb_sig_toforward, --going to forwarding unit
+			write_data );
+--write back adress and data are connected to the register file inside the decode stage
+
+
 END ARCHITECTURE;
