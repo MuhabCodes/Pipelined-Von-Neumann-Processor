@@ -34,10 +34,18 @@ PORT(
 	pc_src : out std_logic;
     flush_if : out std_logic;
 	flush_id : out std_logic;
-	flush_ex : out std_logic;
-	flush_wb : out std_logic
+	flush_ex : out std_logic
 );
 END COMPONENT ;
+COMPONENT forwardingUnit IS
+PORT (
+	
+	data1Dst, data2Dst, dataMemDst, dataWbDst : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
+	RegWriteMem, RegWriteWb : in std_logic ;
+
+	selData1, selData2 : OUT STD_LOGIC_VECTOR (1 DOWNTO 0)
+);
+END COMPONENT;
 
 component fetch_stage is
 port(
@@ -289,6 +297,8 @@ COMPONENT Hazard_detection is
     port(
         clk: in std_logic;
         Rd_in: in std_logic_vector(2 downto 0);
+        RESET_IN : in std_logic; -- HW INTERRUPTS
+		INTR_IN:  in std_logic; -- HW INTERRUPTS
         ID_EX_MemRead:  in std_logic;--memory enable
         IF_ID_write: out std_logic;
         opcode: in std_logic_vector(4 downto 0);
@@ -406,6 +416,8 @@ ram: Memory PORT MAP(
 hazards: Hazard_detection PORT MAP(
         clk => clk,
         Rd_in => Rd_out_exBuff,
+		RESET_IN => RESET_IN,
+		INTR_IN => INTR_IN,
         ID_EX_MemRead => ID_EX_MemRead,--memory enable
         IF_ID_write => IF_ID_write,
         opcode => read_data(31 downto 27),
@@ -435,8 +447,7 @@ controlUnit: control_unit PORT MAP(
 	pc_src => pc_src,
     flush_if => flush_if,
 	flush_id => LoadUseAndFlush,
-	flush_ex => flush_ex,
-	flush_wb => flush_wb
+	flush_ex => flush_ex
 );
 reset_or_interrupt <= int_en or RESET_IN or INTR_IN;
 
@@ -449,13 +460,12 @@ Dstage: Decode_stage PORT MAP (clk, '0', instruction, reg_write_en, flush_id, WB
 				index_out_DStage,LoadUseAndFlush, imm_ea_in);
 
 
-buffer1: buffer_ID_EX PORT MAP (clk, LoadUseAndFlush, ex_signal_in_id_ex ,mem_signal_in_id_ex,
+bufferDE: buffer_ID_EX PORT MAP (clk, LoadUseAndFlush, ex_signal_in_id_ex ,mem_signal_in_id_ex,
 				wb_signal_in_id_ex, pc_in_id,reg1_in_ex, reg2_in_ex, imm_ea_in,
 				Rs_in_exBuff, Rt_in_exBuff, Rd_in_exBuff, ex_signal, mem_en_ex,
 				wb_en_ex, buffer_PC, Rsrc1_instruction, Rsrc2_instruction, IMM,
 				Rs_out_exBuff, Rt_out_exBuff, Rd_out_exBuff, ID_EX_MemRead);
-
-
+	
 ex: ExecuteStage PORT MAP (
    				clk, IMM, IN_PORT, in_select, Rsrc2_mem, Rsrc2_wb, Rsrc2_instruction,
  				isForward2, Rsrc1_mem, Rsrc1_wb ,Rsrc1_instruction, isForward1,
@@ -465,7 +475,7 @@ ex: ExecuteStage PORT MAP (
  				OUT_PORT, Rsrc1_memBuffer, Rsrc2_memBuffer,
  				Rd_Rs_Out, Rs_in_memBuff, Rt_in_memBuff, Rd_in_memBuff, buffer_PC_out, CCR_out);
 
-buffer2:buffer_EX_MEM PORT MAP (
+bufferEM: buffer_EX_MEM PORT MAP (
 			clk, flush_ex,MEM_en_mem,WB_en_mem,ALU_out,Rd_Rs_Out,Rsrc1_memBuffer,
 			Rsrc2_memBuffer,WB_en_wb,MEM_en_wb,execution_output,regAddress,Rsrc1_memStage,Rsrc2_memStage);
 
@@ -483,7 +493,7 @@ mem1: MemoryStage PORT MAP (
 			regAddress,
 			regAddress_wb);--going to forwarding unit and  MEM/WB buffer
 
-buffer3: buffer_MEM_WB  PORT MAP (
+bufferMW: buffer_MEM_WB  PORT MAP (
 			clk ,flush_wb,wb_signal_in, read_data,mem_stage_output,regAddress_wb,
 			Rsrc1_mem_out,--going to execute stage and the MEM/WB buffer and data write 
 			Rsrc2_mem_out,--to be used in forwarding
@@ -506,5 +516,14 @@ wb: WBStage PORT MAP (
 			write_data );
 --write back adress and data are connected to the register file inside the decode stage
 
+forwarding: forwardingUnit PORT MAP(
+	data1Dst => Rs_out_exBuff,
+	data2Dst => Rt_out_exBuff,
+	dataMemDst => regAddress_wb,
+	dataWbDst => WB_adress_to_forward,
+	RegWriteMem => mem_sig_toforward,
+	RegWriteWb =>  wb_sig_toforward,
+	selData1 => isForward1,
+	selData2 => isForward2);
 
 END ARCHITECTURE;

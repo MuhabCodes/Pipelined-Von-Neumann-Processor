@@ -17,22 +17,18 @@ end entity;
 
 architecture registersFile_arch of registersFile is
 
-    type reg_file is array (0 to 7) of std_logic_vector(31 downto 0);
-    signal regOut: reg_file;
+component reg is 
+generic(n: integer :=32);
+    port(
+        d:	in	std_logic_vector(n-1 downto 0) := (others=>'0');
+        q:	out	std_logic_vector(n-1 downto 0) := (others=>'0');
+        en, clk, rst:	in	std_logic
+    );
+end component;
 
-    signal wReg: std_logic_vector(7 downto 0);
-
-    component reg is 
-    generic(n: integer :=32);
-        port(
-            d:	in	std_logic_vector(n-1 downto 0) := (others=>'0');
-            q:	out	std_logic_vector(n-1 downto 0) := (others=>'0');
-            en, clk, rst:	in	std_logic
-        );
-    end component;
-
-	
-
+type reg_file is array (0 to 7) of std_logic_vector(31 downto 0);
+signal regOut: reg_file;
+signal wReg: std_logic_vector(7 downto 0) := (others=>'0');
 
 begin
    	process (clk)
