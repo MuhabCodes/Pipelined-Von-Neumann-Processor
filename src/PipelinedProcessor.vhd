@@ -490,7 +490,7 @@ reset_or_interrupt <= int_en or RESET_IN or INTR_IN;
 -- '.' means still not mapped, mainly control signals
 bufferFD: buffer_IF_ID PORT MAP(clk, flush_if, IF_ID_write, read_data, pc_out, instruction, pc_in_id);
 
-Dstage: Decode_stage PORT MAP (clk, '0', instruction, reg_write_en, flush_id, WBen, MEMen,
+Dstage: Decode_stage PORT MAP (clk, '0', instruction, reg_write_en_MemWb, flush_id, WBen, MEMen,
 				EXen, hazard_Results, write_data, write_reg,
 				reg1_in_ex, reg2_in_ex, Rd_in_exBuff, Rs_in_exBuff, Rt_in_exBuff, 
 				index_out_DStage,LoadUseAndFlush, imm_ea_in);
