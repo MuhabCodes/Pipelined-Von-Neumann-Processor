@@ -38,10 +38,10 @@ def parse_instruction(instruction: string):
     print(instruction)
     # part.append(f'{(int(instruction[1][1],16)):03b}')
     op = part[0]
-    if op in (opcode["NOT"], opcode["INC"], opcode["IN"]):
+    if op in (opcode["NOT"], opcode["INC"], opcode["OUT"], opcode["IN"]):
         part.append(f'{(int(instruction[1][1],16)):03b}')
         part.append(f'{(int(instruction[1][1],16)):03b}')
-    if op in (opcode["OUT"], opcode["PUSH"], opcode["POP"]):
+    if op in (opcode["PUSH"], opcode["POP"]):
         part.append(f'{(int(instruction[1][1],16)):03b}')
     if op in (opcode["LDD"], opcode["STD"]):
         # swap offset value and 2nd register
