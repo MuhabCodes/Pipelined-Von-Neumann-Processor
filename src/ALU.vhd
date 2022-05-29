@@ -84,7 +84,7 @@ N_and<= '1' WHEN AND_out(31)='1'
 --Setting ALU outputs
 Rout<= INC_out WHEN ALU_op= "01110"
   ELSE NOT_out WHEN ALU_op= "01111"
-  ELSE MOV_out WHEN ALU_op= "10000"
+  ELSE MOV_out WHEN ALU_op= "10000" or ALU_op = "01010"
   ELSE AND_out WHEN ALU_op= "10100"
   ELSE ADD_out WHEN ALU_op= "10010" OR ALU_op= "11100"
   ELSE SUB_out WHEN ALU_op= "10011";
