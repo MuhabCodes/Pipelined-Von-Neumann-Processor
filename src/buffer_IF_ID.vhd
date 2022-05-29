@@ -23,7 +23,7 @@ begin
 		if (flush = '1') then
 			instruction <= (others => '0');
 			pc <= (others => '0');
-		elsif (rising_edge(clk) and write_en = '1') then
+		elsif (falling_edge(clk) and write_en = '1') then
 			instruction <= instruction_in;
 			pc <= pc_in;
 		end if;

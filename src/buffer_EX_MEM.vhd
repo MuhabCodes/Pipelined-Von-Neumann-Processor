@@ -67,7 +67,7 @@ begin
 			--wb stage control signals out
 			mem_to_reg_out <= '0';
 			reg_write_out<='0';
-		elsif rising_edge(clk) then
+		elsif falling_edge(clk) then
 			--mem_signal <= mem_signal_in;
 			--wb_signal <= wb_signal_in;
 			alu <= alu_in;

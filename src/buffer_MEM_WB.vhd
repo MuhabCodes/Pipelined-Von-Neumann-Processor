@@ -42,7 +42,7 @@ reg2 <= (others => '0');
 
 mem_to_reg_out <= '0';
 reg_write_out<='0';
-elsif rising_edge(clk) then
+elsif falling_edge(clk) then
 	opcode <= opcode_in;
 	alu <= alu_in;
 	reg <= reg_in;
