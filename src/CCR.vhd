@@ -22,9 +22,9 @@ end component reg1bit ;
 signal temp: std_logic_vector(2 downto 0):="000";
 begin
 
-CarryFlag: reg1bit port map (ccr_in(0),ccr_out(0),ccr_wr_en(0),clk,'0');
+ZeroFlag: reg1bit  port map (ccr_in(0), ccr_out(0) ,ccr_wr_en(0),clk,'0');
 NegativeFlag: reg1bit  port map (ccr_in(1), ccr_out(1) ,ccr_wr_en(1),clk,'0');
-ZeroFlag: reg1bit  port map (ccr_in(2), ccr_out(2) ,ccr_wr_en(2),clk,'0');
+CarryFlag: reg1bit port map (ccr_in(2),ccr_out(2),ccr_wr_en(2),clk,'0');
 
 end architecture;
 
