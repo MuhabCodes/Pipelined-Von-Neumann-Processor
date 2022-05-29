@@ -89,10 +89,11 @@ Rout<= INC_out WHEN ALU_op= "01110"
   ELSE ADD_out WHEN ALU_op= "10010" OR ALU_op= "11100"
   ELSE SUB_out WHEN ALU_op= "10011";
 
-UpdateFlag <= '0' & N_inc & Z_inc WHEN ALU_op= "01110"
-        ELSE '0' & N_not & Z_not WHEN ALU_op= "01111"
-        ELSE '0' & N_and & Z_and WHEN ALU_op= "10100"
-        ELSE C_add & N_add & Z_add WHEN ALU_op= "10010" OR ALU_op= "11100"
-	      ELSE C_sub & N_sub & Z_sub WHEN ALU_op= "10011"
+UpdateFlag <= '0' & N_inc & Z_inc WHEN ALU_op = "01110"
+        ELSE '0' & N_not & Z_not WHEN ALU_op = "01111"
+        ELSE '0' & N_and & Z_and WHEN ALU_op = "10100"
+        ELSE C_add & N_add & Z_add WHEN ALU_op = "10010" OR ALU_op= "11100"
+	      ELSE C_sub & N_sub & Z_sub WHEN ALU_op = "10011"
+        ELSE "100" WHEN ALU_op = "00010"
 	      ELSE "000";
 END ARCHITECTURE;
