@@ -23,7 +23,12 @@ port (
 	pc_src : out std_logic;
 	flush_if : out std_logic;
 	flush_id : out std_logic;
-	flush_ex : out std_logic
+	flush_ex : out std_logic;
+	ID_EX_WBen: out std_logic;
+	ID_EX_MEMen: out std_logic;
+	ID_EX_EXen: out std_logic
+
+
 );
 end entity;
 
@@ -51,6 +56,9 @@ begin
 	process(clk) is
 	begin
 		if rising_edge(clk) then 
+			ID_EX_WBen <= '1';
+			ID_EX_MEMen <= '1';
+			ID_EX_EXen <= '1';
 			if (opcode = "XXXXX") then
 				ccr_wr_en <= "000";
 				reg_write <= '0';

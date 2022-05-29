@@ -34,7 +34,10 @@ PORT(
 	pc_src : out std_logic;
     flush_if : out std_logic;
 	flush_id : out std_logic;
-	flush_ex : out std_logic
+	flush_ex : out std_logic;
+	ID_EX_WBen: out std_logic;
+	ID_EX_MEMen: out std_logic;
+	ID_EX_EXen: out std_logic
 );
 END COMPONENT ;
 COMPONENT forwardingUnit IS
@@ -447,7 +450,10 @@ controlUnit: control_unit PORT MAP(
 	pc_src => pc_src,
     flush_if => flush_if,
 	flush_id => LoadUseAndFlush,
-	flush_ex => flush_ex
+	flush_ex => flush_ex,
+	ID_EX_WBen => wb_signal_in_id_ex,
+	ID_EX_MEMen => mem_signal_in_id_ex,
+	ID_EX_EXen => ex_signal_in_id_ex 
 );
 reset_or_interrupt <= int_en or RESET_IN or INTR_IN;
 
