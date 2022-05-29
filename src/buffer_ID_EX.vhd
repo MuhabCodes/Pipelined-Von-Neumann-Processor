@@ -62,7 +62,7 @@ port(
 
 	--wb stage control signals in
 	mem_to_reg: in std_logic; --sent to forwarding
-
+    reg_write:in std_logic; --sent to forwording
 	--excute stage control signals out
 	restore_flags_out:  out std_logic; 
 	INT_en_out: out std_logic; 
@@ -77,7 +77,8 @@ port(
  	stack_en_out: out std_logic;
 
 	--wb stage control signals out
-	mem_to_reg_out: out std_logic --sent to forwarding
+	mem_to_reg_out: out std_logic; --sent to forwarding
+	reg_write_out:out std_logic --sent to forwording
 );
 
 end entity;
@@ -113,6 +114,7 @@ begin
 
 			--wb stage control signals out
 			mem_to_reg_out <= '0';
+			reg_write_out<='0';
 		elsif rising_edge(clk) then
 
 			--ex_signal <= ex_signal_in;
@@ -141,6 +143,7 @@ begin
 
 			--wb stage control signals out
 			mem_to_reg_out <= mem_to_reg;
+			reg_write_out<= reg_write;
 		end if;
 	end process;
 end architecture;

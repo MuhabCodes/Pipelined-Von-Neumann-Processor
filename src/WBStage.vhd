@@ -16,10 +16,6 @@ PORT(
  
 --beyetla3 mel wb stage el values betrou7 lel mux beta3 el execute stage Rsrc1and Rsrc2 
 --we beyetla3 menha bardo adresses betrou7 el forwarding unit -> beye7sal henak comparison bettala3ly selector el mux dah
- Rsrc1_wb_in : in std_logic_vector(31 downto 0); --comming from buffer MEM/WB
- Rsrc2_wb_in : in std_logic_vector(31 downto 0);
- Rsrc1_wb_out : out std_logic_vector(31 downto 0);--going to execute stage
- Rsrc2_wb_out : out std_logic_vector(31 downto 0);
 
 
  Write_back_out :out std_logic_vector(31 downto 0) --value to write in the register file at the destination adress
@@ -55,8 +51,6 @@ MUX1: mux2x1  GENERIC MAP (32) PORT MAP (Execute_out, Load_value, mem_to_reg,Wri
 
 Write_back_out<=Write_back;
 forward_out<=forward_in;
-Rsrc1_wb_out<=Rsrc1_wb_in;
-Rsrc2_wb_out<=Rsrc2_wb_in;
 
 Write_address_out<=Write_address_in;
 END ARCHITECTURE;

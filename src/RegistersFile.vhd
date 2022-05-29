@@ -40,7 +40,6 @@ begin
 	loop1: for i in 0 to 7 generate
 		regX: reg generic map(32) port map(write_data, regOut(i), wReg(i), clk, rst);
 	end generate;
-
     read_data1 <= regOut(to_integer(unsigned(Rsrc1)));
     read_data2 <= regOut(to_integer(unsigned(Rsrc2)));
 

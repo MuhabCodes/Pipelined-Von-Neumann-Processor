@@ -50,7 +50,7 @@ begin
 
 	process(clk) is
 	begin
-		if rising_edge(clk) then 
+		-- if rising_edge(clk) then 
 			if (opcode = "XXXXX") then
 				ccr_wr_en <= "000";
 				reg_write <= '0';
@@ -582,6 +582,6 @@ begin
 				int_en <= '0';
 				pc_src <= '0';
 			end if;
-		end if;
+		--send if;
 	end process;
 end architecture;

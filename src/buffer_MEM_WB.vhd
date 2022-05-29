@@ -20,8 +20,10 @@ reg2 : out std_logic_vector(31 downto 0);
 
 --wb stage control signals in
 mem_to_reg: in std_logic; --sent to forwarding
+reg_write:in std_logic; --sent to forwording
 --wb stage control signals out
-mem_to_reg_out: out std_logic --sent to forwarding
+mem_to_reg_out: out std_logic; --sent to forwarding
+reg_write_out:out std_logic --sent to forwording
 );
 
 end entity;
@@ -39,6 +41,7 @@ reg1 <= (others => '0');
 reg2 <= (others => '0');
 
 mem_to_reg_out <= '0';
+reg_write_out<='0';
 elsif rising_edge(clk) then
 	opcode <= opcode_in;
 	alu <= alu_in;
@@ -47,6 +50,7 @@ elsif rising_edge(clk) then
 	reg2 <= reg2_in;
 
 	mem_to_reg_out <= mem_to_reg;
+	reg_write_out<= reg_write;
 end if;
 end process;
 end architecture;
