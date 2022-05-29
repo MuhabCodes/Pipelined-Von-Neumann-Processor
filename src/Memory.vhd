@@ -52,8 +52,8 @@ BEGIN
 		END IF;
 	END PROCESS;
 --reading is asynchronous but with a read enable--> to be checked
-read_data <= mem(to_integer(unsigned(sp_in))) WHEN mem_read = '1' AND stack_en = '1'
-		ELSE mem(to_integer(unsigned(address))) WHEN mem_read = '1';
+read_data <= mem(to_integer(unsigned(sp_in))) WHEN stack_en = '1' -- mem_read = '1' AND stack_en = '1'
+		ELSE mem(to_integer(unsigned(address)));
 
 miniALU: mini_alu port map (clk=>clk, mem_write=> mem_write, stack_en => stack_en, sp_in => sp_in, sp_out => sp_out);
     
