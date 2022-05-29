@@ -123,7 +123,7 @@ BEGIN
  ELSE Rsrc1_instruction;--to be used from buffer in the next instructions
  Rsrc2_mem_out<=Rsrc2_instruction;
 
- OUT_PORT<=output_ALU;
+ OUT_PORT <= output_ALU when ALU_op = "01010";
  ALU_out<=output_INMUX;
 --Multiplexer to get which second source to be used based on forwarding unit
 MUX1: mux4x1  GENERIC MAP (32) PORT MAP (Rsrc2_mem_in , Rsrc2_wb_in ,Rsrc2_instruction,zeros,isForward2,Rsrc_chosen2);
