@@ -33,7 +33,6 @@ port(
 	rd : out std_logic_vector(2 downto 0);
 	---
 	ID_EX_MemRead: out std_logic
-
 );
 
 end entity;
@@ -53,6 +52,7 @@ begin
 			rsrc1 <= (others => '0');
 			rsrc2 <= (others => '0');
 			rd <= (others => '0');
+			ID_EX_MemRead <= '0';
 		elsif rising_edge(clk) then
 			ex_signal <= ex_signal_in;
 			mem_signal <= mem_signal_in;
@@ -64,6 +64,7 @@ begin
 			rsrc1 <= rsrc1_in;
 			rsrc2 <= rsrc2_in;
 			rd <= rd_in;
+			ID_EX_MemRead <= mem_signal_in;
 		end if;
 	end process;
 end architecture;
