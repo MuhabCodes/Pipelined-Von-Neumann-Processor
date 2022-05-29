@@ -6,6 +6,8 @@ entity Hazard_detection is
     port(
         clk: in std_logic;
         Rd_in: in std_logic_vector(2 downto 0);
+        RESET_IN: in std_logic; -- HW INTERRUPTS
+        INTR_IN:  in std_logic; -- HW INTERRUPTS
         ID_EX_MemRead:  in std_logic;--memory enable
         IF_ID_write: out std_logic;
         opcode: in std_logic_vector(4 downto 0);
@@ -31,10 +33,14 @@ begin
             hazard_Results<='1';
             Pc_write<='0';
             IF_ID_write<='0';
+        elsif (RESET_IN = '1' or INTR_IN = '1') then
+            hazard_Results <= '1';
+            Pc_write <= '1';
+            IF_ID_write<='0';
         else
             hazard_Results<='0';
             Pc_write<='1';
             IF_ID_write<='1';
-end if;
+        end if;
 end process;
 end architecture HazardArch;
