@@ -125,7 +125,8 @@ BEGIN
  Rs_out<=  Rs_in;
  Rd_out<=  Rd_in;
  buffer_PC_out<=buffer_PC_in;
- Rsrc1_mem_out<=Rsrc1_instruction;--to be used from buffer in the next instructions
+ Rsrc1_mem_out<=output_INMUX WHEN ALU_op="01111" or ALU_op="01011" or ALU_op="01110"
+ ELSE Rsrc1_instruction;--to be used from buffer in the next instructions
  Rsrc2_mem_out<=Rsrc2_instruction;
 
  OUT_PORT<=output_ALU;
