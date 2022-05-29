@@ -9,8 +9,7 @@ PORT(
  Rsrc1_mem_out : out std_logic_vector(31 downto 0);--going to execute stage and the MEM/WB buffer and data write 
  Rsrc2_mem_out : out std_logic_vector(31 downto 0);--to be used in forwarding
  
- mem_en_in, wb_en_in: in std_logic;
- mem_en_out, wb_en_out: out std_logic;
+
  execution_output: in std_logic_vector(31 downto 0); --value comming from execute stage (Rsrc2+offset)-> memory address
  
  mem_stage_output: out std_logic_vector(31 downto 0);--could be store adress OR vslue to be passed to MEM/WB buffer
@@ -28,7 +27,5 @@ Rsrc1_mem_out<=Rsrc1_mem_in;
 Rsrc2_mem_out<=Rsrc2_mem_in;
 Rd_Rs_out<=  Rd_Rs_in;
 mem_stage_output<= execution_output;
- 
- mem_en_out<=mem_en_in;
-wb_en_out<=wb_en_in;
+
 END ARCHITECTURE;

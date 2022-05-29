@@ -75,9 +75,9 @@ begin
 				pc_src <= '0';
 			-- NOP
 			elsif (opcode = "00000") then
-				ID_EX_WBen <= '1';
-				ID_EX_MEMen <= '1';
-				ID_EX_EXen <= '1';
+				-- ID_EX_WBen <= '1';
+				-- ID_EX_MEMen <= '1';
+				-- ID_EX_EXen <= '1';
 				ccr_wr_en <= "000";
 				reg_write <= '0';
 				alu_src <= '0';

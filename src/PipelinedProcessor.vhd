@@ -123,11 +123,7 @@ PORT(
 	clk : in std_logic;
 	flush : in std_logic;
 	--- INPUTS
-	--- START stored control signals
-	ex_signal_in : in std_logic;
-	mem_signal_in : in std_logic;
-	wb_signal_in : in std_logic;
-	--- END stored control signals
+	
 	pc_in : in std_logic_vector(31 downto 0);
 	reg1_in : in std_logic_vector(31 downto 0);
 	reg2_in : in std_logic_vector(31 downto 0);
@@ -136,11 +132,7 @@ PORT(
 	rsrc2_in : in std_logic_vector(2 downto 0);
 	rd_in : in std_logic_vector(2 downto 0);
 	--- OUTPUTS
-	--- START stored control signals
-	ex_signal : out std_logic;
-	mem_signal : out std_logic;
-	wb_signal : out std_logic;
-	--- END stored control signals
+
 	pc : out std_logic_vector(31 downto 0);
 	reg1 : out std_logic_vector(31 downto 0);
 	reg2 : out std_logic_vector(31 downto 0);
@@ -149,7 +141,40 @@ PORT(
 	rsrc2 : out std_logic_vector(2 downto 0);
 	rd : out std_logic_vector(2 downto 0);
 	---
-	ID_EX_MemRead:  out std_logic);
+	ID_EX_MemRead:  out std_logic;
+	
+---excute stage control signal in
+	restore_flags:  in std_logic; 
+	INT_en: in std_logic; 
+	CCR_write_en:  in std_logic_vector(2 downto 0);
+	ALU_src: in std_logic;  --control signal to choose the second source in ALU op
+	ALU_op: in std_logic_vector (4 downto 0); 
+	in_select: in std_logic;
+
+	--memory stage control signals in
+	mem_read: in std_logic; --sent to forwarding
+ 	mem_write: in std_logic; 
+ 	stack_en: in std_logic;
+
+	--wb stage control signals in
+	mem_to_reg: in std_logic; --sent to forwarding
+
+	--excute stage control signals out
+	restore_flags_out:  out std_logic; 
+	INT_en_out: out std_logic; 
+	CCR_write_en_out:  out std_logic_vector(2 downto 0);
+	ALU_src_out: out std_logic;  --control signal to choose the second source in ALU op
+	ALU_op_out: out std_logic_vector (4 downto 0); 
+	in_select_out: out std_logic;
+
+	--memory stage control signals out
+	mem_read_out: out std_logic; --sent to forwarding
+ 	mem_write_out: out std_logic; 
+ 	stack_en_out: out std_logic;
+
+	--wb stage control signals out
+	mem_to_reg_out: out std_logic --sent to forwarding
+	);
 END COMPONENT ;
 
 COMPONENT ExecuteStage IS 
@@ -182,12 +207,6 @@ PORT(
 	CCR_write_en:  in std_logic_vector(2 downto 0);
 	INT_en: in std_logic; --interrupt enable control signal
 	
-	WB_en_in: in std_logic;
-	MEM_en_in:in std_logic;
-
-	WB_en_out:out std_logic;
-	MEM_en_out:out std_logic;
-	
 	ALU_out: out std_logic_vector(31 downto 0); --output of the ALU operation goes to buffer
 	OUT_PORT:out std_logic_vector(31 downto 0);
 
@@ -209,23 +228,35 @@ port(
 	clk : in std_logic;
 	flush : in std_logic;
 	--- INPUTS
-	--- START stored control signals
-	mem_signal_in : in std_logic;
-	wb_signal_in : in std_logic;
-	--- END stored control signals
+
 	alu_in : in std_logic_vector(31 downto 0);
 	reg_in : in std_logic_vector(2 downto 0);
         reg1_in : in std_logic_vector(31 downto 0);
 	reg2_in : in std_logic_vector(31 downto 0);
-	--- OUTPUTS
-	--- START stored control signals
-	mem_signal : out std_logic;
-	wb_signal : out std_logic;
-	--- END stored control signals
+
 	alu : out std_logic_vector(31 downto 0);
 	reg : out std_logic_vector(2 downto 0);
 	reg1 : out std_logic_vector(31 downto 0);
-	reg2 : out std_logic_vector(31 downto 0));
+	reg2 : out std_logic_vector(31 downto 0);
+		--memory stage control signals in
+	mem_read: in std_logic; --sent to forwarding
+ 	mem_write: in std_logic; 
+ 	stack_en: in std_logic;
+
+	--wb stage control signals in
+	mem_to_reg: in std_logic; --sent to forwarding
+
+
+	--memory stage control signals out
+	mem_read_out: out std_logic; --sent to forwarding
+ 	mem_write_out: out std_logic; 
+ 	stack_en_out: out std_logic;
+
+	--wb stage control signals out
+	mem_to_reg_out: out std_logic --sent to forwarding
+
+
+	);
 END COMPONENT ;
 
 COMPONENT MemoryStage IS 
@@ -234,8 +265,7 @@ PORT(
  	Rsrc2_mem_in : in std_logic_vector(31 downto 0);
 	Rsrc1_mem_out : out std_logic_vector(31 downto 0);--going to execute stage and the MEM/WB buffer and data write 
 	Rsrc2_mem_out : out std_logic_vector(31 downto 0);--to be used in forwarding
-	mem_en_in, wb_en_in: in std_logic;
- 	mem_en_out, wb_en_out: out std_logic;
+	
 	execution_output: in std_logic_vector(31 downto 0); --value comming from execute stage (Rsrc2+offset)-> memory address
  	mem_stage_output: out std_logic_vector(31 downto 0);--could be store adress OR vslue to be passed to MEM/WB buffer
  	Rd_Rs_in: in std_logic_vector(2 downto 0);
@@ -256,26 +286,26 @@ END COMPONENT ;
 
 COMPONENT  buffer_MEM_WB is 
 PORT(
-	clk : in std_logic;
-	flush : in std_logic;
-	--- INPUTS
-	--- START stored control signals
-	wb_signal_in : in std_logic;
-	--- END stored control signals
-	opcode_in : in std_logic_vector(31 downto 0);
-	alu_in : in std_logic_vector(31 downto 0);
-	reg_in : in std_logic_vector(2 downto 0);
-	reg1_in : in std_logic_vector(31 downto 0);
-	reg2_in : in std_logic_vector(31 downto 0);
-	--- OUTPUTS
-	--- START stored control signals
-	wb_signal : out std_logic;
-	--- END stored control signals
-	opcode : out std_logic_vector(31 downto 0);
-	alu : out std_logic_vector(31 downto 0);
-	reg : out std_logic_vector(2 downto 0);
-	reg1 : out std_logic_vector(31 downto 0);
-	reg2 : out std_logic_vector(31 downto 0));
+clk : in std_logic;
+flush : in std_logic;
+
+opcode_in : in std_logic_vector(31 downto 0);
+alu_in : in std_logic_vector(31 downto 0);
+reg_in : in std_logic_vector(2 downto 0);
+reg1_in : in std_logic_vector(31 downto 0);
+reg2_in : in std_logic_vector(31 downto 0);
+
+opcode : out std_logic_vector(31 downto 0);
+alu : out std_logic_vector(31 downto 0);
+reg : out std_logic_vector(2 downto 0);
+reg1 : out std_logic_vector(31 downto 0);
+reg2 : out std_logic_vector(31 downto 0);
+
+--wb stage control signals in
+mem_to_reg: in std_logic; --sent to forwarding
+--wb stage control signals out
+mem_to_reg_out: out std_logic );
+
 END COMPONENT ;
 
 COMPONENT  WBStage IS 
@@ -291,8 +321,7 @@ PORT(
 	Rsrc2_wb_in : in std_logic_vector(31 downto 0);
  	Rsrc1_wb_out : out std_logic_vector(31 downto 0);--going to execute stage
  	Rsrc2_wb_out : out std_logic_vector(31 downto 0);
- 	wb_enable_in :in std_logic;--comming from MEM/WB buffer
- 	wb_enable_out:out std_logic; --going to forwarding unit
+ 	
  	Write_back_out :out std_logic_vector(31 downto 0) );
 END COMPONENT ;
 
@@ -346,7 +375,9 @@ SIGNAL Rs_in_exBuff,Rt_in_exBuff,Rd_in_exBuff :std_logic_vector(2 downto 0);--re
 
 SIGNAL buffer_PC, Rsrc1_instruction,Rsrc2_instruction,IMM: std_logic_vector(31 downto 0);
 SIGNAL Rs_out_exBuff,Rt_out_exBuff,Rd_out_exBuff :std_logic_vector(2 downto 0);
-
+SIGNAL restoreflags_idEX, int_en_IdEx, ALu_src_idEX, in_select_idEX,mem_read_idEX, mem_write_idEx, stack_en_idEx, mem_to_reg_idEX: std_logic;
+SIGNAL CCR_wr_en_idEx: std_logic_vector(2 downto 0);
+SIGNAL ALU_OP_idEx: std_logic_vector(4 downto 0);
 --Execute stage signals
 SIGNAL Rsrc1_mem,Rsrc1_wb,Rsrc2_mem,Rsrc2_wb,ALU_out : std_logic_vector(31 downto 0);--sources comming from ememory and write back stages
 
@@ -354,7 +385,9 @@ SIGNAL isForward1,isForward2: std_logic_vector(1 downto 0);--output of fw unit /
 SIGNAL WB_en_mem,MEM_en_mem,WB_en_wb,MEM_en_wb : std_logic; --enable signals
 SIGNAL Rsrc1_memBuffer,Rsrc2_memBuffer, buffer_PC_out,execution_output ,Rsrc1_memStage,Rsrc2_memStage: std_logic_vector(31 downto 0);--sources passed to buffers for forwarding
 SIGNAL CCR_write_en, CCR_out, Rd_Rs_Out,Rs_in_memBuff,Rt_in_memBuff,Rd_in_memBuff, regAddress:std_logic_vector(2 downto 0);
-
+--EX/mem buffer signals
+SIGNAL mem_to_reg_MemWb, mem_read_ExMem, mem_write_ExMem, stack_en_ExMem, mem_to_reg_ExMem: std_logic;
+ 
 -- Control Unit Signals
 SIGNAL reg_write_en, in_select, mem_write, mem_read, mem_to_reg, stack_en, return_en, ALU_src, flush_if, flush_id, flush_ex, flush_wb: std_logic;
 SIGNAL fetch_memory, restore_flags,INT_en, pc_src: std_logic;
@@ -466,24 +499,24 @@ Dstage: Decode_stage PORT MAP (clk, '0', instruction, reg_write_en, flush_id, WB
 				index_out_DStage,LoadUseAndFlush, imm_ea_in);
 
 
-bufferDE: buffer_ID_EX PORT MAP (clk, LoadUseAndFlush, ex_signal_in_id_ex ,mem_signal_in_id_ex,
-				wb_signal_in_id_ex, pc_in_id,reg1_in_ex, reg2_in_ex, imm_ea_in,
-				Rs_in_exBuff, Rt_in_exBuff, Rd_in_exBuff, ex_signal, mem_en_ex,
-				wb_en_ex, buffer_PC, Rsrc1_instruction, Rsrc2_instruction, IMM,
-				Rs_out_exBuff, Rt_out_exBuff, Rd_out_exBuff, ID_EX_MemRead);
+bufferDE: buffer_ID_EX PORT MAP (clk, LoadUseAndFlush, pc_in_id,reg1_in_ex, reg2_in_ex,imm_ea_in,
+				Rs_in_exBuff, Rt_in_exBuff, Rd_in_exBuff, buffer_PC, Rsrc1_instruction, Rsrc2_instruction, IMM,
+				Rs_out_exBuff, Rt_out_exBuff, Rd_out_exBuff, ID_EX_MemRead, restore_flags,INT_en,CCR_write_en,ALU_src,
+				ALU_op,in_select,mem_read,mem_write,stack_en,mem_to_reg, restoreflags_idEX, int_en_IdEx,CCR_wr_en_idEx, ALu_src_idEX
+				, ALU_OP_idEx, in_select_idEX,mem_read_idEX,mem_write_idEx,stack_en_idEx,mem_to_reg_idEX);
 	
 ex: ExecuteStage PORT MAP (
-   				clk, IMM, IN_PORT, in_select, Rsrc2_mem, Rsrc2_wb, Rsrc2_instruction,
+   				clk, IMM, IN_PORT, in_select_idEX, Rsrc2_mem, Rsrc2_wb, Rsrc2_instruction,
  				isForward2, Rsrc1_mem, Rsrc1_wb ,Rsrc1_instruction, isForward1,
- 				ALU_src, ALU_op, Rd_out_exBuff, Rs_out_exBuff, Rt_out_exBuff,
- 				buffer_PC, restore_flags, CCR_write_en, INT_en,
- 				wb_en_ex, mem_en_ex, WB_en_mem, MEM_en_mem, ALU_out,
+ 				ALu_src_idEX, ALU_OP_idEx, Rd_out_exBuff, Rs_out_exBuff, Rt_out_exBuff,
+ 				buffer_PC, restoreflags_idEX, CCR_wr_en_idEx, int_en_IdEx, ALU_out,
  				OUT_PORT, Rsrc1_memBuffer, Rsrc2_memBuffer,
  				Rd_Rs_Out, Rs_in_memBuff, Rt_in_memBuff, Rd_in_memBuff, buffer_PC_out, CCR_out);
 
 bufferEM: buffer_EX_MEM PORT MAP (
-			clk, flush_ex,MEM_en_mem,WB_en_mem,ALU_out,Rd_Rs_Out,Rsrc1_memBuffer,
-			Rsrc2_memBuffer,WB_en_wb,MEM_en_wb,execution_output,regAddress,Rsrc1_memStage,Rsrc2_memStage);
+			clk, flush_ex,ALU_out,Rd_Rs_Out,Rsrc1_memBuffer,
+			Rsrc2_memBuffer,execution_output,regAddress,Rsrc1_memStage,Rsrc2_memStage,mem_read_idEX,mem_write_idEx
+			, stack_en_idEx, mem_to_reg_idEX,mem_read_ExMem, mem_write_ExMem, stack_en_ExMem, mem_to_reg_ExMem);
 
 				
 Rsrc1_mem<=Rsrc1_mem_out;--setting the data going from memory stage to eexecute stage
@@ -493,32 +526,31 @@ mem1: MemoryStage PORT MAP (
 			Rsrc1_memStage,Rsrc2_memStage,	
 			Rsrc1_mem_out,--going to execute stage and the MEM/WB buffer and data write 
 			Rsrc2_mem_out,--to be used in forwarding
-			MEM_en_wb, WB_en_wb, mem_sig_toforward, wb_signal_in,--enable signals in /out
+			--enable signals in /out
 			execution_output,
 			mem_stage_output,--could be store adress OR vslue to be passed to MEM/WB buffer
 			regAddress,
 			regAddress_wb);--going to forwarding unit and  MEM/WB buffer
 
 bufferMW: buffer_MEM_WB  PORT MAP (
-			clk ,flush_wb,wb_signal_in, read_data,mem_stage_output,regAddress_wb,
+			clk ,flush_wb, read_data,mem_stage_output,regAddress_wb,
 			Rsrc1_mem_out,--going to execute stage and the MEM/WB buffer and data write 
 			Rsrc2_mem_out,--to be used in forwarding
-			wb_signal_out,Load_value,Execute_out,
+			Load_value,Execute_out,
 			Write_address_in,--destination adress for the register file comming from buffer (Rd aw Rs) to wb stage
-			Rsrc1_wb,Rsrc2_wb);
+			Rsrc1_wb,Rsrc2_wb,mem_to_reg_ExMem,mem_to_reg_MemWb);
 
 wb: WBStage PORT MAP (
 			Write_address_in, --destination adress for the register file comming from buffer (Rd aw Rs)
 			write_reg, --destination adress going to reg file
 			Execute_out,--value comming from execute stage(ALU)
 			Load_value, --value comming from memory
-			mem_to_reg,
+			mem_to_reg_MemWb,
 			Write_address_in,--destination wrue back for previous instruction-> for forwarding unit
 			WB_adress_to_forward,--going to the forwarding unit
 			Rsrc1_wb,Rsrc2_wb,
 			Rsrc1_wb,Rsrc2_wb,--going to execute stage
-			wb_signal_out,--comming from MEM/WB buffer
-			wb_sig_toforward, --going to forwarding unit
+			--going to forwarding unit
 			write_data );
 --write back adress and data are connected to the register file inside the decode stage
 
@@ -527,8 +559,8 @@ forwarding: forwardingUnit PORT MAP(
 	data2Dst => Rt_out_exBuff,
 	dataMemDst => regAddress_wb,
 	dataWbDst => WB_adress_to_forward,
-	RegWriteMem => mem_sig_toforward,
-	RegWriteWb =>  wb_sig_toforward,
+	RegWriteMem => mem_read_ExMem,
+	RegWriteWb =>  mem_to_reg_MemWb,
 	selData1 => isForward1,
 	selData2 => isForward2);
 

@@ -21,8 +21,6 @@ PORT(
  Rsrc1_wb_out : out std_logic_vector(31 downto 0);--going to execute stage
  Rsrc2_wb_out : out std_logic_vector(31 downto 0);
 
- wb_enable_in :in std_logic;--comming from MEM/WB buffer
- wb_enable_out:out std_logic; --going to forwarding unit
 
  Write_back_out :out std_logic_vector(31 downto 0) --value to write in the register file at the destination adress
 
@@ -59,6 +57,6 @@ Write_back_out<=Write_back;
 forward_out<=forward_in;
 Rsrc1_wb_out<=Rsrc1_wb_in;
 Rsrc2_wb_out<=Rsrc2_wb_in;
-wb_enable_out<=wb_enable_in;
+
 Write_address_out<=Write_address_in;
 END ARCHITECTURE;

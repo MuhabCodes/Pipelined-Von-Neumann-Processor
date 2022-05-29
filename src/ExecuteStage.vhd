@@ -34,12 +34,6 @@ PORT(
  CCR_write_en:  in std_logic_vector(2 downto 0);
  INT_en: in std_logic; --interrupt enable control signal
  
- WB_en_in: in std_logic;
- MEM_en_in:in std_logic;
-
- WB_en_out:out std_logic;
- MEM_en_out:out std_logic;
- 
  ALU_out: out std_logic_vector(31 downto 0); --output of the ALU operation goes to buffer
  OUT_PORT:out std_logic_vector(31 downto 0);
 
@@ -156,8 +150,7 @@ MUX6: mux2x1  GENERIC MAP (3) PORT MAP (update_Flag,SaveFlag_out,restore_flags,C
 CCR1: CCR  PORT MAP (clk,CCR_write_en,CCR_in,CCR_out);
 CCR2: SaveFlags PORT MAP (CCR_out,SaveFlag_out,INT_en,clk);
 
-WB_en_out<=WB_en_in;
-MEM_en_out<=MEM_en_in;
+
 CCR_output <= CCR_out;
 
 
