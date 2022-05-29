@@ -23,8 +23,7 @@ port (
 	pc_src : out std_logic;
 	flush_if : out std_logic;
 	flush_id : out std_logic;
-	flush_ex : out std_logic;
-	flush_wb : out std_logic
+	flush_ex : out std_logic
 );
 end entity;
 
@@ -556,6 +555,23 @@ begin
 				in_select <= '0';
 				fetch_memory <= '1';
 				mem_write <= '1';
+				mem_read <= '0';
+				stack_en <= '0';
+				mem_to_reg <= '0';
+				return_en <= '0';
+				jmp_en <= '0';
+				jmp_op <= "00";
+				restore_flags <= '0';
+				int_en <= '0';
+				pc_src <= '0';
+			else
+				ccr_wr_en <= "000";
+				reg_write <= '0';
+				alu_src <= '0';
+				alu_op <= "00000";
+				in_select <= '0';
+				fetch_memory <= '0';
+				mem_write <= '0';
 				mem_read <= '0';
 				stack_en <= '0';
 				mem_to_reg <= '0';
