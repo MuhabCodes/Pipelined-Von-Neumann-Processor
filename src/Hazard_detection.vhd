@@ -29,13 +29,17 @@ begin
         --     if Rd_in = Rs_in OR Rd_in = Rt_in then
         --         hazard_Results<='1';
        
-        if ID_EX_MemRead = '1' and ((Rd_in = Rs_in) or (Rd_in = Rt_in)) then
+        if ID_EX_MemRead = '1' and (Rd_in = Rs_in or Rd_in = Rt_in) then
             hazard_Results<='1';
             Pc_write<='0';
             IF_ID_write<='0';
-        elsif (RESET_IN = '1' or INTR_IN = '1') then
+        elsif RESET_IN = '1' or INTR_IN = '1' then
             hazard_Results <= '1';
             Pc_write <= '1';
+            IF_ID_write<='0';
+        elsif opcode = "00001" then
+            hazard_Results <= '0';
+            Pc_write <= '0';
             IF_ID_write<='0';
         else
             hazard_Results<='0';
