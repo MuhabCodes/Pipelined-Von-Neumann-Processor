@@ -1,8 +1,11 @@
 # Generated verilog files
-/src/*.mpf
-/src/*.mti
-/src/*.bak
-/src/*.wlf
-/src/work/**
-/src/transcript
-/src/[A-Za-z]*
+# Ignore all
+*
+# Unignore all dirs
+!*/
+# Unignore all without the following extensions
+!*.vhd
+!*.do
+!*.asm
+!*.py
+!*.mem
