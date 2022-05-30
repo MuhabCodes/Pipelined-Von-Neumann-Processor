@@ -285,6 +285,7 @@ END COMPONENT ;
 COMPONENT Memory IS 
 PORT(
  	 clk: in std_logic; 
+	interrupt: in std_logic;
 	 mem_read: in std_logic; --enables
 	 mem_write: in std_logic;
 	 stack_en: in std_logic;
@@ -459,6 +460,7 @@ MUXPC: mux2x1  GENERIC MAP (32) PORT MAP (Mem_dataWrite, buffer_PC_out , INTR_IN
 
 ram: Memory PORT MAP(
 	clk => clk,
+	interrupt => INTR_IN,
 	mem_read => mem_read_ExMem, --enables
 	mem_write => mem_write_ExMem,
 	stack_en => stack_en_ExMem,
