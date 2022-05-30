@@ -4,6 +4,7 @@ use ieee.std_logic_1164.all;
 entity buffer_ID_EX is 
 port(
 	clk : in std_logic;
+	rst : in std_logic;
 	flush : in std_logic;
 	--- INPUTS
 	-- --- START stored control signals
@@ -22,21 +23,8 @@ port(
 	rsrc1_in : in std_logic_vector(2 downto 0);
 	rsrc2_in : in std_logic_vector(2 downto 0);
 	rd_in : in std_logic_vector(2 downto 0);
+
 	--- OUTPUTS
-
-	-- --- START stored control signals
-	-- ex_signal : out std_logic;
-	-- mem_signal : out std_logic;
-	-- wb_signal : out std_logic;
-	-- --- END stored control signals
-
-
-
-
-	
-
-
-
 	pc : out std_logic_vector(31 downto 0);
 	reg1 : out std_logic_vector(31 downto 0);
 	reg2 : out std_logic_vector(31 downto 0);
@@ -56,6 +44,7 @@ port(
 	in_select: in std_logic;
 
 	--memory stage control signals in
+ 	fetch_memory: in std_logic;
 	mem_read: in std_logic; --sent to forwarding
  	mem_write: in std_logic; 
  	stack_en: in std_logic;
@@ -72,6 +61,7 @@ port(
 	in_select_out: out std_logic;
 
 	--memory stage control signals out
+ 	fetch_memory_out: out std_logic;
 	mem_read_out: out std_logic; --sent to forwarding
  	mem_write_out: out std_logic; 
  	stack_en_out: out std_logic;
@@ -85,9 +75,9 @@ end entity;
 
 architecture struct of buffer_ID_EX is
 begin
-	process(flush, clk)
+	process(rst, flush, clk)
 	begin
-		if (flush = '1') then
+		if rst = '1' or flush = '1' then
 			--ex_signal <= '0';
 			--mem_signal <= '0';
 			--wb_signal <= '0';
@@ -108,6 +98,7 @@ begin
 			in_select_out <= '0';
 
 			--memory stage control signals out
+			fetch_memory_out <= '0';
 			mem_read_out <= '0'; --sent to forwarding
 			mem_write_out <= '0';
 			stack_en_out <= '0';
@@ -120,7 +111,7 @@ begin
 			--ex_signal <= ex_signal_in;
 			--mem_signal <= mem_signal_in;
 			--wb_signal <= wb_signal_in;
-			imm_ea_extend <= (31 downto 16 => imm_ea_in(15)) & imm_ea_in(15 downto 0);
+			imm_ea_extend <= (31 downto 16 => '0') & imm_ea_in(15 downto 0);
 			pc <= pc_in;
 			reg1 <= reg1_in;
 			reg2 <= reg2_in;
@@ -137,6 +128,7 @@ begin
 			in_select_out <= in_select;
 
 			--memory stage control signals out
+			fetch_memory_out <= fetch_memory;
 			mem_read_out <= mem_read; --sent to forwarding
 			mem_write_out <= mem_write;
 			stack_en_out <= stack_en;
