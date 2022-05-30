@@ -23,7 +23,7 @@ architecture HazardArch of Hazard_detection is
 
     
 begin
-    process(clk)
+    process(clk, RESET_IN, INTR_IN)
     begin
         -- if mem_to_reg = '1' and( opcode = "11110" or opcode = "11101")then 
         --     if Rd_in = Rs_in OR Rd_in = Rt_in then
