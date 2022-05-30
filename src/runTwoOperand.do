@@ -26,13 +26,14 @@ force -freeze sim:/pipelinedprocessor/IN_PORT 16#00000005 0
 run
 run
 run
+force -freeze sim:/pipelinedprocessor/ex/IN_PORT 00000019 0
 run
-force -freeze sim:/pipelinedprocessor/IN_PORT 00000019 0
-run
-force -freeze sim:/pipelinedprocessor/IN_PORT FFFFFFFF 0
+force -freeze sim:/pipelinedprocessor/ex/IN_PORT FFFFFFFF 0
 run
 force -freeze sim:/pipelinedprocessor/ex/IN_PORT FFFFF320 0
 run
 run
 run
+
+
 
