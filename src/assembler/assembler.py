@@ -65,6 +65,7 @@ def parse_instruction(instruction: string):
         part.append(f'{int(instruction[2][1],16):03b}')
         part.append(f'{int(instruction[3][1],16):03b}')
     if op in (opcode["JZ"], opcode["JN"], opcode["JC"], opcode["JMP"], opcode["CALL"]):
+        part.append(f'{int("0"):011b}')
         part.append(f'{int(instruction[1],16):016b}')
     if op in (opcode["INT"]):
         part.append(f'{int(instruction[1],16):01b}')
