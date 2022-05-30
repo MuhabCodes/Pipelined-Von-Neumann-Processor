@@ -53,7 +53,10 @@ def parse_instruction(instruction: string):
         # Rsrc2 & filler bits, 5 unused bits
         part.append(f'{int("0",16):05b}')
         part.append(f'{int(instruction[3],16):016b}')
-    if op in (opcode["MOV"], opcode["SWAP"]):
+    if op in (opcode["MOV"]):
+        part.append(f'{int(instruction[2][1],16):03b}')
+        part.append(f'{(int(instruction[1][1],16)):03b}')
+    if op in (opcode["SWAP"]):
         part.append(f'{(int(instruction[1][1],16)):03b}')
         part.append(f'{int(instruction[2][1],16):03b}')
     if op in (opcode["ADD"], opcode["SUB"], opcode["AND"]):
