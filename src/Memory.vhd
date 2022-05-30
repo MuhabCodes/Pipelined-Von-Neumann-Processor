@@ -32,7 +32,7 @@ end component;
 --defining a memory of 1 mega with 32 bits width
     TYPE mem_type IS ARRAY (0 to 2 ** 20 - 1) OF std_logic_vector(31 downto 0);
     SIGNAL mem: mem_type;
-	SIGNAL sp_in: std_logic_vector(31 downto 0) := (31 downto 20 => '0') & (19 downto 1 => '1') & (0 => '0');
+	SIGNAL sp_in: std_logic_vector(31 downto 0) := (31 downto 20 => '0') & (19 downto 0 => '1');
 	SIGNAl sp_out: std_logic_vector(31 downto 0);
 	SIGNAL write_data_signal: std_logic_vector(31 downto 0);
 
@@ -45,7 +45,7 @@ BEGIN
 		   	IF stack_en = '1' THEN
 				mem(to_integer(unsigned(sp_in))) <= write_data;
 			ELSE
-				mem(to_integer(unsigned(address))) <= write_data;
+				mem(to_integer(unsigned(address(19 downto 0)))) <= write_data;
 			END IF;
 			sp_in <= sp_out;
 			END IF;
@@ -53,7 +53,7 @@ BEGIN
 	END PROCESS;
 --reading is asynchronous but with a read enable--> to be checked
 read_data <= mem(to_integer(unsigned(sp_in))) WHEN stack_en = '1' -- mem_read = '1' AND stack_en = '1'
-		ELSE mem(to_integer(unsigned(address)));
+		ELSE mem(to_integer(unsigned(address(19 downto 0))));
 
 miniALU: mini_alu port map (clk=>clk, mem_write=> mem_write, stack_en => stack_en, sp_in => sp_in, sp_out => sp_out);
     
