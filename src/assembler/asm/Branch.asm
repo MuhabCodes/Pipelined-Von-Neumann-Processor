@@ -39,6 +39,7 @@ IN R3     #R3=100
 IN R4     #R4=300
 #Push R4   #SP=FFFFFFFE, M[FFFFFFFF]=300
 #INT 1     #SP=FFFFFFFD, M[FFFFFFFE]=next PC
+# Call 300  #SP=FFFFFFFE, M[FFFFFFFF]=next PC
 JMP 30 
 INC R1	  # this statement shouldn't be executed
  
@@ -65,7 +66,6 @@ INC R1     # this statement shouldn't be executed
 .ORG 700
 SETC      #C-->1
 POP R6    #R6=300, SP=FFFFFFFF, try hardware interrupt here
-Call 300  #SP=FFFFFFFE, M[FFFFFFFF]=next PC
 INC R6	  #R6=401, this statement shouldn't be executed till call returns, C--> 0, N-->0,Z-->0
 NOP
 NOP

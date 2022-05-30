@@ -28,14 +28,24 @@ IN R3        #R3=FFFFFFFF
 IN R4        #R4=FFFFF320
 LDM R1,5     #R1=5
 PUSH R1      #SP=FFFFFFFE,M[FFFFFFFF]=5
+NOP
+NOP
+NOP
+NOP
+NOP
 PUSH R2      #SP=FFFFFFFD,M[FFFFFFFE]=19
+NOP
+NOP
+NOP
+NOP
+NOP
 # POP R1       #SP=FFFFFFFE,R1=19
 # POP R2       #SP=FFFFFFFF,R2=5
 # IN R5        #R5= 10, for teams implementing exceptions you should run this test case another time and load R5 with FFFFFD60
-# STD R2,200(R5)   #M[210]=5, Exception in the 2nd run
-# STD R1,201(R5)   #M[211]=19
-# LDD R3,201(R5)   #R3=19
-# LDD R4,200(R5)   #R4=5
+# STD R2,200(R2)   #M[219]=19, Exception in the 2nd run
+# STD R1,201(R2)   #M[220]=19
+# LDD R3,201(R2)   #R3=19
+# LDD R4,200(R2)   #R4=5
 
 #Only for teams implementing exceptions
 # POP R3  #exception

@@ -53,7 +53,6 @@ begin
 	process(clk) is
 	begin
 		-- if rising_edge(clk) then 
-			
 			if (opcode = "XXXXX") then
 				ccr_wr_en <= "000";
 				reg_write <= '0';
@@ -267,23 +266,23 @@ begin
 			elsif (opcode = "01100") then
 				ccr_wr_en <= "000";
 				reg_write <= '0';
-				alu_src <= '1';
+				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
 				fetch_memory <= '0';
 				mem_write <= '1';
-				mem_read <= '1';
+				mem_read <= '0';
 				stack_en <= '1';
 				mem_to_reg <= '0';
 				return_en <= '0';
-				jmp_en <= '0';
-				jmp_op <= "00";
+				jmp_en <= '1';
+				jmp_op <= "11";
 				restore_flags <= '0';
 				int_en <= '0';
-				pc_src <= '0';
+				pc_src <= '1';
 				flush_ex <= '0';
-				flush_id <='0';
-				flush_if <= '0';
+				flush_id <='1';
+				flush_if <= '1';
 			-- INT
 			elsif (opcode = "01101") then
 				ccr_wr_en <= "000";
