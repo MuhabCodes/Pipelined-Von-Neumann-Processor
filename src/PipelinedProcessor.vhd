@@ -16,6 +16,8 @@ ARCHITECTURE PipelinedProcessor_arch OF PipelinedProcessor  IS
 COMPONENT  control_unit IS
 PORT(
 	clk : in std_logic;
+	rst : in std_logic;
+	intr : in std_logic;
 	opcode : in std_logic_vector(4 downto 0);
 	CCR_OUT: in std_logic_vector(2 downto 0);
 	ccr_wr_en : out std_logic_vector(2 downto 0);
@@ -470,6 +472,8 @@ hazards: Hazard_detection PORT MAP(
 
 controlUnit: control_unit PORT MAP(
 	clk => clk,
+	rst => RESET_IN,
+	intr => INTR_IN,
 	opcode => Instruction(31 downto 27), -- will be changed after as the bits must be sent after F/D buffer
 	CCR_OUT => CCR_out,
 	ccr_wr_en => CCR_write_en,
@@ -572,111 +576,114 @@ bufferDE: buffer_ID_EX PORT MAP (
 );
 	
 ex: ExecuteStage PORT MAP (
-   				clk => clk, 
-				rst => RESET_IN,
-				IMM => IMM, 
-				IN_PORT => IN_PORT, 
-				in_select => in_select_idEX, 
-				Rsrc2_mem_in => Rsrc2_mem,
-				Rsrc2_wb_in => Rsrc2_wb,
-				Rsrc2_instruction => Rsrc2_instruction,
- 				isForward2 => isForward2, 
-				Rsrc1_mem_in => Rsrc1_mem, 
-				Rsrc1_wb_in => Rsrc1_wb,
-				Rsrc1_instruction => Rsrc1_instruction,
-				isForward1 => isForward1,
- 				alu_src => ALu_src_idEX, 
-				ALU_op => ALU_OP_idEx,
-				Rd_in => Rd_out_exBuff,
-				Rs_in => Rs_out_exBuff, 
-				Rt_in => Rt_out_exBuff,
- 				buffer_PC_in => buffer_PC,
-				restore_flags => restoreflags_idEX,
-				CCR_write_en => CCR_wr_en_idEx, 
-				INT_en => int_en_IdEx, 
-				ALU_out => ALU_out,
- 				OUT_PORT => OUT_PORT, 
-				Rsrc1_mem_out => Rsrc1_memBuffer, 
-				Rsrc2_mem_out => Rsrc2_memBuffer,
- 				Rd_Rs_Out => Rd_Rs_Out, 
-				Rs_out => Rs_in_memBuff, 
-				Rt_out => Rt_in_memBuff,
-				Rd_out => Rd_in_memBuff,
-				buffer_PC_out => buffer_PC_out, 
-				CCR_output => CCR_out);
+		clk => clk, 
+		rst => RESET_IN,
+		IMM => IMM, 
+		IN_PORT => IN_PORT, 
+		in_select => in_select_idEX, 
+		Rsrc2_mem_in => Rsrc2_mem,
+		Rsrc2_wb_in => Rsrc2_wb,
+		Rsrc2_instruction => Rsrc2_instruction,
+		isForward2 => isForward2, 
+		Rsrc1_mem_in => Rsrc1_mem, 
+		Rsrc1_wb_in => Rsrc1_wb,
+		Rsrc1_instruction => Rsrc1_instruction,
+		isForward1 => isForward1,
+		alu_src => ALu_src_idEX, 
+		ALU_op => ALU_OP_idEx,
+		Rd_in => Rd_out_exBuff,
+		Rs_in => Rs_out_exBuff, 
+		Rt_in => Rt_out_exBuff,
+		buffer_PC_in => buffer_PC,
+		restore_flags => restoreflags_idEX,
+		CCR_write_en => CCR_wr_en_idEx, 
+		INT_en => int_en_IdEx, 
+		ALU_out => ALU_out,
+		OUT_PORT => OUT_PORT, 
+		Rsrc1_mem_out => Rsrc1_memBuffer, 
+		Rsrc2_mem_out => Rsrc2_memBuffer,
+		Rd_Rs_Out => Rd_Rs_Out, 
+		Rs_out => Rs_in_memBuff, 
+		Rt_out => Rt_in_memBuff,
+		Rd_out => Rd_in_memBuff,
+		buffer_PC_out => buffer_PC_out, 
+		CCR_output => CCR_out
+);
 
 bufferEM: buffer_EX_MEM PORT MAP (
-			clk => clk, 
-			rst => RESET_IN,
-			flush => flush_ex,
-			alu_in => ALU_out,
-			reg_in => Rd_Rs_Out,
-			reg1_in => Rsrc1_memBuffer,
-			reg2_in => Rsrc2_memBuffer,
-			alu => execution_output,
-			reg => regAddress,
-			reg1 => Rsrc1_memStage,
-			reg2 => Rsrc2_memStage,
-			fetch_memory => fetch_memory_idEx,
-			mem_read => mem_read_idEX,
-			mem_write => mem_write_idEx,
-			stack_en => stack_en_idEx,
-			mem_to_reg => mem_to_reg_idEX,
-			reg_write => reg_write_en_idEX,
-			fetch_memory_out => fetch_memory_ExMem,
-			mem_read_out => mem_read_ExMem, 
-			mem_write_out => mem_write_ExMem, 
-			stack_en_out => stack_en_ExMem, 
-			mem_to_reg_out => mem_to_reg_ExMem,
-			reg_write_out => reg_write_en_ExMem
+		clk => clk, 
+		rst => RESET_IN,
+		flush => flush_ex,
+		alu_in => ALU_out,
+		reg_in => Rd_Rs_Out,
+		reg1_in => Rsrc1_memBuffer,
+		reg2_in => Rsrc2_memBuffer,
+		alu => execution_output,
+		reg => regAddress,
+		reg1 => Rsrc1_memStage,
+		reg2 => Rsrc2_memStage,
+		fetch_memory => fetch_memory_idEx,
+		mem_read => mem_read_idEX,
+		mem_write => mem_write_idEx,
+		stack_en => stack_en_idEx,
+		mem_to_reg => mem_to_reg_idEX,
+		reg_write => reg_write_en_idEX,
+		fetch_memory_out => fetch_memory_ExMem,
+		mem_read_out => mem_read_ExMem, 
+		mem_write_out => mem_write_ExMem, 
+		stack_en_out => stack_en_ExMem, 
+		mem_to_reg_out => mem_to_reg_ExMem,
+		reg_write_out => reg_write_en_ExMem
 );
 
 				
-Rsrc1_mem<=Rsrc1_mem_out;--setting the data going from memory stage to eexecute stage
-Rsrc2_mem<=Rsrc2_mem_out;--setting the data going from memory stage to eexecute stage
-Mem_dataWrite<=Rsrc1_mem_out;--in store operations this is the value stored
+Rsrc1_mem <= Rsrc1_mem_out;--setting the data going from memory stage to eexecute stage
+Rsrc2_mem <= Rsrc2_mem_out;--setting the data going from memory stage to eexecute stage
+Mem_dataWrite <= Rsrc1_mem_out;--in store operations this is the value stored
 StoreAddress<=mem_stage_output;--in store operations thi is store adress
 mem1: MemoryStage PORT MAP (
-			Rsrc1_memStage,Rsrc2_memStage,	
-			Rsrc1_mem_out,--going to execute stage and the MEM/WB buffer and data write 
-			Rsrc2_mem_out,--to be used in forwarding
-			--enable signals in /out
-			execution_output,
-			mem_stage_output,--could be store adress OR vslue to be passed to MEM/WB buffer
-			regAddress,
-			regAddress_wb);--going to forwarding unit and  MEM/WB buffer
+		Rsrc1_mem_in => Rsrc1_memStage,
+		Rsrc2_mem_in => Rsrc2_memStage,	
+		Rsrc1_mem_out => Rsrc1_mem_out,--going to execute stage and the MEM/WB buffer and data write 
+		Rsrc2_mem_out => Rsrc2_mem_out,--to be used in forwarding
+		--enable signals in/out
+		execution_output => execution_output,
+		mem_stage_output => mem_stage_output,--could be store adress OR vslue to be passed to MEM/WB buffer
+		Rd_Rs_in => regAddress,
+		Rd_Rs_out => regAddress_wb
+);--going to forwarding unit and  MEM/WB buffer
 
 bufferMW: buffer_MEM_WB  PORT MAP (
-			clk => clk ,
-			rst => RESET_IN,
-			flush => flush_wb, 
-			opcode_in => read_data,
-			alu_in => mem_stage_output,
-			reg_in => regAddress_wb,
-			reg1_in => Rsrc1_mem_out,--going to execute stage and the MEM/WB buffer and data write 
-			reg2_in => Rsrc2_mem_out,--to be used in forwarding
-			opcode => Load_value,
-			alu => Execute_out,
-			reg => Write_address_in,--destination adress for the register file comming from buffer (Rd aw Rs) to wb stage
-			reg1 => Rsrc1_wb,
-			reg2 => Rsrc2_wb,
-			mem_to_reg => mem_to_reg_ExMem,
-			reg_write => reg_write_en_ExMem,
-			mem_to_reg_out => mem_to_reg_MemWb,
-			reg_write_out => reg_write_en_MemWb
+		clk => clk ,
+		rst => RESET_IN,
+		flush => flush_wb, 
+		opcode_in => read_data,
+		alu_in => mem_stage_output,
+		reg_in => regAddress_wb,
+		reg1_in => Rsrc1_mem_out,--going to execute stage and the MEM/WB buffer and data write 
+		reg2_in => Rsrc2_mem_out,--to be used in forwarding
+		opcode => Load_value,
+		alu => Execute_out,
+		reg => Write_address_in,--destination adress for the register file comming from buffer (Rd aw Rs) to wb stage
+		reg1 => Rsrc1_wb,
+		reg2 => Rsrc2_wb,
+		mem_to_reg => mem_to_reg_ExMem,
+		reg_write => reg_write_en_ExMem,
+		mem_to_reg_out => mem_to_reg_MemWb,
+		reg_write_out => reg_write_en_MemWb
 );
 
 wb: WBStage PORT MAP (
-			Write_address_in, --destination adress for the register file comming from buffer (Rd aw Rs)
-			write_reg, --destination adress going to reg file
-			Execute_out,--value comming from execute stage(ALU)
-			Load_value, --value comming from memory
-			mem_to_reg_MemWb,
-			Write_address_in,--destination wrue back for previous instruction-> for forwarding unit
-			WB_adress_to_forward,--going to the forwarding unit
-			
-			--going to forwarding unit
-			write_data
+		Write_address_in, --destination adress for the register file comming from buffer (Rd aw Rs)
+		write_reg, --destination adress going to reg file
+		Execute_out,--value comming from execute stage(ALU)
+		Load_value, --value comming from memory
+		mem_to_reg_MemWb,
+		Write_address_in,--destination wrue back for previous instruction-> for forwarding unit
+		WB_adress_to_forward,--going to the forwarding unit
+		
+		--going to forwarding unit
+		write_data
 );
 --write back adress and data are connected to the register file inside the decode stage
 
