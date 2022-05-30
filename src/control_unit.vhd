@@ -376,7 +376,7 @@ begin
 				pc_src <= '0';
 			-- AND
 			elsif (opcode = "10100") then
-				ccr_wr_en <= "111";
+				ccr_wr_en <= "011";
 				reg_write <= '1';
 				alu_src <= '0';
 				alu_op <= opcode;
