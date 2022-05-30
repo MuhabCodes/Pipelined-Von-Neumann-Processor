@@ -1,6 +1,6 @@
 vsim -gui work.pipelinedprocessor
 radix -hexadecimal
-mem load -i {C:\Users\habib\Desktop\Computer architechture\Project\Pipelined-Von-Neumann-Processor\src\assembler\mem\TwoOperand.mem} -update_properties /pipelinedprocessor/ram/mem
+mem load -i {D:\UNI\cce_sem_4\arch project github\Pipelined-Von-Neumann-Processor\src\assembler\mem\TwoOperand.mem} -update_properties /pipelinedprocessor/ram/mem
 add wave -position insertpoint  \
 sim:/pipelinedprocessor/clk
 add wave -position insertpoint  \
