@@ -28,23 +28,26 @@ begin
         -- if mem_to_reg = '1' and( opcode = "11110" or opcode = "11101")then 
         --     if Rd_in = Rs_in OR Rd_in = Rt_in then
         --         hazard_Results<='1';
-       
         if ID_EX_MemRead = '1' and (Rd_in = Rs_in or Rd_in = Rt_in) then
-            hazard_Results<='1';
-            Pc_write<='0';
-            IF_ID_write<='0';
+            hazard_Results <= '1';
+            Pc_write <= '0';
+            IF_ID_write <= '0';
         elsif RESET_IN = '1' or INTR_IN = '1' then
             hazard_Results <= '1';
             Pc_write <= '1';
-            IF_ID_write<='0';
+            IF_ID_write <= '0';
         elsif opcode = "00001" then
             hazard_Results <= '0';
             Pc_write <= '0';
-            IF_ID_write<='0';
+            IF_ID_write <= '0';
+        elsif opcode = "01000" then
+            hazard_Results <= '0';
+            Pc_write <= '0';
+            IF_ID_write <= '0';
         else
-            hazard_Results<='0';
-            Pc_write<='1';
-            IF_ID_write<='1';
+            hazard_Results <= '0';
+            Pc_write <= '1';
+            IF_ID_write <= '1';
         end if;
 end process;
 end architecture HazardArch;
