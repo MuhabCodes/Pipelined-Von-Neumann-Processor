@@ -87,6 +87,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- NOP
 			elsif (opcode = "00000") then
 				ccr_wr_en <= "000";
@@ -105,6 +108,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- HLT
 			elsif (opcode = "00001") then
 				ccr_wr_en <= "000";
@@ -123,6 +129,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- SETC
 			elsif (opcode = "00010") then
 				ccr_wr_en <= "100";
@@ -141,6 +150,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- RET
 			elsif (opcode = "00011") then
 				ccr_wr_en <= "000";
@@ -159,6 +171,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- RTI
 			elsif (opcode = "00100") then
 				ccr_wr_en <= "111";
@@ -177,6 +192,9 @@ begin
 				restore_flags <= '1';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- PUSH
 			elsif (opcode = "01000") then
 				ccr_wr_en <= "000";
@@ -195,6 +213,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- POP
 			elsif (opcode = "01001") then
 				ccr_wr_en <= "000";
@@ -213,6 +234,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- OUT
 			elsif (opcode = "01010") then
 				ccr_wr_en <= "000";
@@ -231,6 +255,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- IN
 			elsif (opcode = "01011") then
 				ccr_wr_en <= "000";
@@ -249,6 +276,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- CALL
 			elsif (opcode = "01100") then
 				ccr_wr_en <= "000";
@@ -267,6 +297,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- INT
 			elsif (opcode = "01101") then
 				ccr_wr_en <= "000";
@@ -285,6 +318,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '1';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- INC
 			elsif (opcode = "01110") then
 				ccr_wr_en <= "111";
@@ -303,6 +339,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- NOT
 			elsif (opcode = "01111") then
 				ccr_wr_en <= "011";
@@ -321,6 +360,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- MOV
 			elsif (opcode = "10000") then
 				ccr_wr_en <= "000";
@@ -339,6 +381,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- SWAP
 			elsif (opcode = "10001") then
 				ccr_wr_en <= "000";
@@ -357,6 +402,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- ADD
 			elsif (opcode = "10010") then
 				ccr_wr_en <= "111";
@@ -375,6 +423,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- SUB
 			elsif (opcode = "10011") then
 				ccr_wr_en <= "111";
@@ -393,6 +444,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- AND
 			elsif (opcode = "10100") then
 				ccr_wr_en <= "011";
@@ -411,6 +465,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- JZ
 			elsif (opcode = "11000") then
 				ccr_wr_en <= "001";
@@ -435,6 +492,9 @@ begin
 					flush_if <= '1';
 				else
 					pc_src <= '0';
+					flush_ex <= '0';
+					flush_id <='0';
+					flush_if <= '0';
 				end if;
 			-- JN
 			elsif (opcode = "11001") then
@@ -460,6 +520,9 @@ begin
 					flush_if <= '1';
 				else
 					pc_src <= '0';
+					flush_ex <= '0';
+					flush_id <='0';
+					flush_if <= '0';
 				end if;
 			-- JC
 			elsif (opcode = "11010") then
@@ -485,6 +548,9 @@ begin
 					flush_if <= '1';
 				else
 					pc_src <= '0';
+					flush_ex <= '0';
+					flush_id <='0';
+					flush_if <= '0';
 				end if;
 			-- JMP
 			elsif (opcode = "11011") then
@@ -510,6 +576,9 @@ begin
 					flush_if <= '1';
 				else
 					pc_src <= '0';
+					flush_ex <= '0';
+					flush_id <='0';
+					flush_if <= '0';
 				end if;
 			-- IADD
 			elsif (opcode = "11100") then
@@ -529,6 +598,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- LDM
 			elsif (opcode = "11101") then
 				ccr_wr_en <= "000";
@@ -547,6 +619,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- LDD
 			elsif (opcode = "11110") then
 				ccr_wr_en <= "000";
@@ -565,6 +640,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			-- STD
 			elsif (opcode = "11111") then
 				ccr_wr_en <= "000";
@@ -583,6 +661,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			else
 				ccr_wr_en <= "000";
 				reg_write <= '0';
@@ -600,6 +681,9 @@ begin
 				restore_flags <= '0';
 				int_en <= '0';
 				pc_src <= '0';
+				flush_ex <= '0';
+				flush_id <='0';
+				flush_if <= '0';
 			end if;
 		--send if;
 	end process;

@@ -175,7 +175,10 @@ PORT(
 
 	--wb stage control signals out
 	mem_to_reg_out: out std_logic; --sent to forwarding
-	reg_write_out:out std_logic --sent to forwording
+	reg_write_out:out std_logic; --sent to forwording
+
+	jmp_address: out std_logic_vector(31 downto 0)
+
 	);
 END COMPONENT ;
 
@@ -379,7 +382,7 @@ SIGNAL ex_signal, mem_en_ex, wb_en_ex,ID_EX_MemRead: std_logic; --control signal
 SIGNAL reg1_in_ex,reg2_in_ex, pc_in_id: std_logic_vector(31 downto 0);--registers and PC values
 SIGNAL imm_ea_in: std_logic_vector(15 downto 0);--immediate value
 SIGNAL Rs_in_exBuff,Rt_in_exBuff,Rd_in_exBuff :std_logic_vector(2 downto 0);--registers addresses
-
+SIGNAL jmp_addres_from_IDEx: std_logic_vector(31 downto 0);
 SIGNAL buffer_PC, Rsrc1_instruction,Rsrc2_instruction,IMM: std_logic_vector(31 downto 0);
 SIGNAL Rs_out_exBuff,Rt_out_exBuff,Rd_out_exBuff :std_logic_vector(2 downto 0);
 SIGNAL restoreflags_idEX, int_en_IdEx, ALu_src_idEX, in_select_idEX, fetch_memory_idEx, mem_read_idEX, mem_write_idEx, stack_en_idEx, mem_to_reg_idEX: std_logic;
@@ -491,7 +494,7 @@ controlUnit: control_unit PORT MAP(
 	int_en => INT_en,
 	pc_src => pc_src,
     flush_if => flush_if,
-	flush_id => LoadUseAndFlush,
+	flush_id => flush_id,
 	flush_ex => flush_ex
 
 );
@@ -512,7 +515,7 @@ bufferFD: buffer_IF_ID PORT MAP(
 -- Decode Stage
 Dstage: Decode_stage PORT MAP (
 	clk => clk, 
-	rst => '0',
+	rst => RESET_IN,
 	instruction => instruction,
 	reg_write => reg_write_en_MemWb,
 	flush_id => flush_id, 
@@ -572,7 +575,8 @@ bufferDE: buffer_ID_EX PORT MAP (
 	mem_write_out => mem_write_idEx,
 	stack_en_out => stack_en_idEx,
 	mem_to_reg_out => mem_to_reg_idEX,
-	reg_write_out => reg_write_en_idEX
+	reg_write_out => reg_write_en_idEX,
+	jmp_address => jmp_addres_from_IDEx
 );
 	
 ex: ExecuteStage PORT MAP (

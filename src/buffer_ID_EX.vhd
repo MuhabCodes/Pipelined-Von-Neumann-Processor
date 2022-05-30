@@ -65,10 +65,12 @@ port(
 	mem_read_out: out std_logic; --sent to forwarding
  	mem_write_out: out std_logic; 
  	stack_en_out: out std_logic;
-
 	--wb stage control signals out
 	mem_to_reg_out: out std_logic; --sent to forwarding
-	reg_write_out:out std_logic --sent to forwording
+	reg_write_out:out std_logic; --sent to forwording
+
+	jmp_address: out std_logic_vector(31 downto 0)
+
 );
 
 end entity;
@@ -77,14 +79,15 @@ architecture struct of buffer_ID_EX is
 begin
 	process(rst, flush, clk)
 	begin
-		if rst = '1' or flush = '1' then
+		if falling_edge(clk) and (rst = '1' or flush = '1') then
 			--ex_signal <= '0';
 			--mem_signal <= '0';
 			--wb_signal <= '0';
 			pc <= (others => '0');
 			reg1 <= (others => '0');
 			reg2 <= (others => '0');
-			imm_ea_extend <= (others => '0');
+			imm_ea_extend <= (31 downto 16 => '0') & imm_ea_in(15 downto 0);
+			jmp_address <= (31 downto 16 => '0') & imm_ea_in(15 downto 0);
 			rsrc1 <= (others => '0');
 			rsrc2 <= (others => '0');
 			rd <= (others => '0');
