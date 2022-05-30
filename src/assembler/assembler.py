@@ -116,7 +116,7 @@ def asm2mem(file_name: string):
         if i[0] == ".ORG":
             address = int(i[1], 16)
 
-        elif all(c in string.hexdigits for c in i[0]):
+        elif all(c in string.hexdigits for c in i[0]) and i[0] != "ADD":
             # convert hexadecimal to binary and write to mem
             memory[address] = f'{int(i[0], 16):032b}'
             # move address
