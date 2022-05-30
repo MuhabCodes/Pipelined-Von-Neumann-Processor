@@ -10,9 +10,6 @@ entity decode_stage is
         --control signals
 	    reg_write : in std_logic;
 	    flush_id : in std_logic;
-        WBen: in std_logic;
-        MEMen:in std_logic;
-        EXen:in std_logic;
         hazard_results: in std_logic;
 
         --other inputs
@@ -64,13 +61,13 @@ signal bit5INTindex: std_logic_vector(1 downto 0);
 
 begin
    
-    bit5INTindex<='0' & Instruction(26);
+    bit5INTindex <= '0' & Instruction(26);
     RegistersComp: registersFile port map (reg_write, CLK, rst, Instruction(23 downto 21), Instruction(20 downto 18), writeReg, writeData, readData1, readData2);
-    Rs<=Instruction(23 downto 21);
-    Rt<=Instruction(20 downto 18);
-    Rd<=Instruction(26 downto 24);
-    IMM_out<= instruction(15 downto 0);
+    Rs <= Instruction(23 downto 21);
+    Rt <= Instruction(20 downto 18);
+    Rd <= Instruction(26 downto 24);
+    IMM_out <= instruction(15 downto 0);
     addingPc: adder generic map (2) port map ('0', "10", bit5INTindex, index, open);
-    LoadUseAndFlush<=flush_id or hazard_Results;
+    LoadUseAndFlush <= flush_id or hazard_Results;
 
 end architecture rtl;

@@ -165,7 +165,7 @@ begin
 				alu_src <= '0';
 				alu_op <= opcode;
 				in_select <= '0';
-				fetch_memory <= '1';
+				fetch_memory <= '0';
 				mem_write <= '1';
 				mem_read <= '0';
 				stack_en <= '1';
