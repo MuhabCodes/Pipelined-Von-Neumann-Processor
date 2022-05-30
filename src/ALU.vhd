@@ -87,7 +87,8 @@ Rout<= INC_out WHEN ALU_op= "01110"
   ELSE MOV_out WHEN ALU_op= "10000" or ALU_op = "01010"
   ELSE AND_out WHEN ALU_op= "10100"
   ELSE ADD_out WHEN ALU_op= "10010" OR ALU_op= "11100"
-  ELSE SUB_out WHEN ALU_op= "10011";
+  ELSE SUB_out WHEN ALU_op= "10011"
+  ELSE R2 WHEN ALU_op = "11101";
 
 UpdateFlag <= INC_cout & N_inc & Z_inc WHEN ALU_op = "01110"
         ELSE '0' & N_not & Z_not WHEN ALU_op = "01111"

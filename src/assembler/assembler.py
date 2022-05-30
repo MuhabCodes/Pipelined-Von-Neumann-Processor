@@ -43,6 +43,7 @@ def parse_instruction(instruction: string):
         part.append(f'{(int(instruction[1][1],16)):03b}')
     if op in (opcode["PUSH"], opcode["POP"]):
         part.append(f'{(int(instruction[1][1],16)):03b}')
+        part.append(f'{(int(instruction[1][1],16)):03b}')
     if op in (opcode["LDD"], opcode["STD"]):
         # swap offset value and 2nd register
         # from opcode, rd, offset, rs
@@ -69,8 +70,9 @@ def parse_instruction(instruction: string):
         part.append(f'{int(instruction[1],16):01b}')
     if op in (opcode["LDM"]):
         part.append(f'{int(instruction[1][1],16):03b}')
+        part.append(f'{int(instruction[1][1],16):03b}')
         # Rsrc1, Rsrc2 & filler bits, 5 unused bits
-        part.append(f'{int("0",16):08b}')
+        part.append(f'{int("0",16):05b}')
         part.append(f'{int(instruction[2],16):016b}')
     if op in (opcode["IADD"]):
         part.append(f'{int(instruction[1][1],16):03b}')
