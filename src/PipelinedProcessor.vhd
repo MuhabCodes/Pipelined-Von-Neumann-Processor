@@ -440,9 +440,9 @@ fetch: fetch_stage PORT MAP (
 
 ram: Memory PORT MAP(
 	clk => clk,
-	mem_read => mem_read, --enables
-	mem_write => mem_write,
-	stack_en => stack_en,
+	mem_read => mem_read_ExMem, --enables
+	mem_write => mem_write_ExMem,
+	stack_en => stack_en_ExMem,
 	address => address,--address to read or write
 	write_data => Mem_dataWrite,
 	read_data => read_data
