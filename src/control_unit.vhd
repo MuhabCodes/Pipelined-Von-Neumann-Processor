@@ -5,6 +5,8 @@ use ieee.NUMERIC_STD.all;
 entity control_unit IS
 port (
 	clk : in std_logic;
+	rst : in std_logic;
+	intr : in std_logic;
 	opcode : in std_logic_vector(4 downto 0);
 	CCR_OUT: in std_logic_vector(2 downto 0);
 	ccr_wr_en : out std_logic_vector(2 downto 0);
@@ -51,7 +53,24 @@ begin
 	process(clk) is
 	begin
 		-- if rising_edge(clk) then 
-			if (opcode = "XXXXX") then
+			if (intr = '1') then
+				ccr_wr_en <= "000";
+				reg_write <= '0';
+				alu_src <= '0';
+				alu_op <= "00000";
+				in_select <= '0';
+				fetch_memory <= '0';
+				mem_write <= '1';
+				mem_read <= '0';
+				stack_en <= '1';
+				mem_to_reg <= '0';
+				return_en <= '0';
+				jmp_en <= '0';
+				jmp_op <= "00";
+				restore_flags <= '0';
+				int_en <= '0';
+				pc_src <= '0';
+			elsif (opcode = "XXXXX") then
 				ccr_wr_en <= "000";
 				reg_write <= '0';
 				alu_src <= '0';
