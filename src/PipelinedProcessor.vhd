@@ -517,6 +517,7 @@ bufferEM: buffer_EX_MEM PORT MAP (
 
 				
 Rsrc1_mem<=Rsrc1_mem_out;--setting the data going from memory stage to eexecute stage
+Rsrc2_mem<=Rsrc2_mem_out;--setting the data going from memory stage to eexecute stage
 Mem_dataWrite<=Rsrc1_mem_out;--in store operations this is the value stored
 StoreAddress<=mem_stage_output;--in store operations thi is store adress
 mem1: MemoryStage PORT MAP (
