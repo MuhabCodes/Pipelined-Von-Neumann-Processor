@@ -25,17 +25,6 @@ END ENTITY;
 
 ARCHITECTURE WBStage_arch OF WBStage IS
 
-COMPONENT registersFile IS
-PORT( 
-        reg_write: in std_logic;-- write enable in register file
-        clk, rst: in std_logic;
-        Rsrc1,Rsrc2: in std_logic_vector(2 downto 0); --reading source adresses
-        write_reg: in std_logic_vector(2 downto 0); --writing destination adresses
-        write_data: in std_logic_vector(31 downto 0);
-        read_data1,read_data2: out std_logic_vector(31 downto 0)
-    );
-END COMPONENT ;
-
 COMPONENT  mux2x1 is 
 generic (n: integer := 32);
     PORT(
