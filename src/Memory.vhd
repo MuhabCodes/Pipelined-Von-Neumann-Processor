@@ -6,7 +6,7 @@ use ieee.numeric_std.all;
 ENTITY Memory IS 
 PORT(
  clk: in std_logic; 
- 
+ interrupt: in std_logic;
  mem_read: in std_logic; --enables
  mem_write: in std_logic;
  stack_en: in std_logic;
@@ -22,6 +22,7 @@ ARCHITECTURE Memory_arch OF Memory IS
 component mini_alu is
     port(
         clk: in std_logic;
+		interrupt: in std_logic;
         mem_write: in std_logic;
         stack_en: in std_logic;
         sp_in: in std_logic_vector(31 downto 0);
@@ -41,8 +42,8 @@ BEGIN
 	BEGIN
 		--writing in memory with the rising edge
 		IF rising_edge(clk) THEN  
-		   IF mem_write = '1' THEN
-		   	IF stack_en = '1' THEN
+		   IF mem_write = '1' or interrupt='1' THEN
+		   	IF stack_en = '1' or interrupt='1' THEN
 				mem(to_integer(unsigned(sp_in))) <= write_data;
 			ELSE
 				mem(to_integer(unsigned(address(19 downto 0)))) <= write_data;
@@ -52,9 +53,9 @@ BEGIN
 		END IF;
 	END PROCESS;
 --reading is asynchronous but with a read enable--> to be checked
-read_data <= mem(to_integer(unsigned(sp_in))) WHEN stack_en = '1' -- mem_read = '1' AND stack_en = '1'
+read_data <= mem(to_integer(unsigned(sp_in))) WHEN stack_en = '1'  -- mem_read = '1' AND stack_en = '1'
 		ELSE mem(to_integer(unsigned(address(19 downto 0))));
 
-miniALU: mini_alu port map (clk=>clk, mem_write=> mem_write, stack_en => stack_en, sp_in => sp_in, sp_out => sp_out);
+miniALU: mini_alu port map (clk=>clk,interrupt=> interrupt, mem_write=> mem_write, stack_en => stack_en, sp_in => sp_in, sp_out => sp_out);
     
 END ARCHITECTURE;

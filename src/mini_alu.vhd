@@ -6,6 +6,7 @@ use ieee.numeric_std.all;
 entity mini_alu is
     port(
         clk: in std_logic;
+        interrupt: in std_logic;
         mem_write: in std_logic;
         stack_en: in std_logic;
         sp_in: in std_logic_vector(31 downto 0);
@@ -34,7 +35,7 @@ one <= (31 downto 1 => '0') & (0 downto 0 => '1');
 neg_one <= (others=> '1');
 
 whichAdd<= one when (stack_en ='1' and mem_write ='0')
-else neg_one when (stack_en ='1' and mem_write ='1')
+else neg_one when (stack_en ='1' and mem_write ='1')  or interrupt='1'
 else (others=>'0');
 
 add_map: adder generic map (32) port map ('0', sp_in, whichAdd, sp_out, open);

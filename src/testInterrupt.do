@@ -1,6 +1,6 @@
 vsim -gui work.pipelinedprocessor
 radix -hexadecimal
-mem load -i {C:/Users/Muhab/OneDrive/Documents/GitHub/Pipelined-Von-Neumann-Processor/src/assembler/mem/TwoOperand.mem} -update_properties /pipelinedprocessor/ram/mem
+mem load -i {C:/Users/habib/Desktop/Computer architechture/Project/Pipelined-Von-Neumann-Processor/src/assembler/mem/TwoOperand.mem} -update_properties /pipelinedprocessor/ram/mem
 add wave -position insertpoint sim:/pipelinedprocessor/fetch/*
 add wave -position insertpoint sim:/pipelinedprocessor/bufferFD/*
 add wave -position insertpoint sim:/pipelinedprocessor/Dstage/*
