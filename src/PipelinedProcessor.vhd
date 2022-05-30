@@ -363,6 +363,13 @@ PORT(
         read_data1,read_data2: out std_logic_vector(31 downto 0));
 END COMPONENT ;
 
+COMPONENT  mux2x1 is 
+generic (n: integer := 32);
+    PORT(
+   	in1, in2 : in std_logic_vector (n - 1 downto 0);
+    	sel : in  std_logic;
+    	out1: out std_logic_vector (n - 1 downto 0));
+END COMPONENT ;
 -- FETCH STAGE SIGNALS
 SIGNAL pc_out, address, index: std_logic_vector(31 downto 0);
 
@@ -405,7 +412,7 @@ SIGNAL reset_or_interrupt: std_logic;
 SIGNAL ALU_op: std_logic_vector(4 downto 0);
 
 -- Memory signals
-SIGNAL read_data: std_logic_vector(31 downto 0);
+SIGNAL read_data, memoryWrite: std_logic_vector(31 downto 0);
 
 -- Hazard Detection signal
 SIGNAL pc_write, hazard_Results: std_logic;
@@ -448,6 +455,7 @@ fetch: fetch_stage PORT MAP (
         pc_out => pc_out,
         address => address
 );
+MUXPC: mux2x1  GENERIC MAP (32) PORT MAP (Mem_dataWrite, buffer_PC_out , INTR_IN, memoryWrite);
 
 ram: Memory PORT MAP(
 	clk => clk,
@@ -455,7 +463,7 @@ ram: Memory PORT MAP(
 	mem_write => mem_write_ExMem,
 	stack_en => stack_en_ExMem,
 	address => address,--address to read or write
-	write_data => Mem_dataWrite,
+	write_data => memoryWrite,
 	read_data => read_data
 );
 
