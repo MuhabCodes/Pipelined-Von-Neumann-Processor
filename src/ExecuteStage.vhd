@@ -119,9 +119,9 @@ BEGIN
  Rs_out<=  Rs_in;
  Rd_out<=  Rd_in;
  buffer_PC_out<=buffer_PC_in;
- Rsrc1_mem_out<=output_INMUX WHEN ALU_op="01111" or ALU_op="01011" or ALU_op="01110"
- ELSE Rsrc1_instruction;--to be used from buffer in the next instructions
- Rsrc2_mem_out<=Rsrc2_instruction;
+ Rsrc1_mem_out<= output_INMUX; -- WHEN ALU_op="01111" or ALU_op="01011" or ALU_op="01110"
+-- ELSE Rsrc1_instruction;--to be used from buffer in the next instructions
+ Rsrc2_mem_out<= output_INMUX;
 
  OUT_PORT <= output_ALU when ALU_op = "01010";
  ALU_out<=output_INMUX;
@@ -129,7 +129,7 @@ BEGIN
 MUX1: mux4x1  GENERIC MAP (32) PORT MAP (Rsrc2_mem_in , Rsrc2_wb_in ,Rsrc2_instruction,zeros,isForward2,Rsrc_chosen2);
 
 --Multiplexer to choose between source and immediate value based on a control signal
-MUX2: mux2x1  GENERIC MAP (32) PORT MAP (IMM ,Rsrc_chosen2,ALU_src,ALU_Rsrc2);
+MUX2: mux2x1  GENERIC MAP (32) PORT MAP (Rsrc_chosen2, IMM , ALU_src, ALU_Rsrc2);
 
 --Multiplexer to get which first source to be used based on forwarding unit
 MUX3: mux4x1  GENERIC MAP (32) PORT MAP (Rsrc1_mem_in , Rsrc1_wb_in ,Rsrc1_instruction,zeros,isForward1,ALU_Rsrc1);
