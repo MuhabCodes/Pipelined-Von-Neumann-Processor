@@ -1,4 +1,4 @@
-# Ignore generated verilog files
+# Generated verilog files
 # Ignore all
 *
 # Unignore all dirs
