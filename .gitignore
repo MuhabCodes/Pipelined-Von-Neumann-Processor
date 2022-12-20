@@ -1,4 +1,4 @@
-# Gitignore for the generated verilog files
+# Ignore generated verilog files
 # Ignore all
 *
 # Unignore all dirs
