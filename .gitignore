@@ -1,11 +1,10 @@
 # Generated verilog files
 # Ignore all
 *
-# Unignore all dirs
-!*/
 # Unignore all without the following extensions
 !*.vhd
 !*.do
 !*.asm
 !*.py
 !*.mem
+!*.xlsx
